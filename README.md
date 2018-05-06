@@ -9,7 +9,7 @@ If want to tip me you can find my instance of LightningTip ...
 <img src="https://i.imgur.com/0mOEgTf.gif" width="240">
 
 ## Credit ##
-Kudos to [michael1011](https://github.com/michael1011/lightningtip) forthe original LightningTip. The difference between the two pjects are shown in this table.
+Kudos to [michael1011](https://github.com/michael1011/lightningtip) for the original [LightningTip](https://github.com/michael1011/lightningtip/blob/master/README.md). The difference between the two projects are shown in this table.
 
 ||LightningTip|LightningTip-PHP|
 |--|--|--|
@@ -38,7 +38,7 @@ The _invoice.macroon_ file limits the functionality available to LightningTip.ph
   * lightningTip.css
   * lightningTip_light.css (Optional)
 * Copy the contents of the head tag from `lightningTip.php` into the head section of the HTML file you want to show LightningTip in. The div below the head tag is LightningTip itself. Paste it into any place in the already edited HTML file on your server.
-* Edit lightningTip.php and edit the _CHANGE ME_ section 
+* Edit the _CHANGE ME_ section of `lightningTip.php`. This is where you enter the HEX version of your _invoice.macaroon_.
 
 There is a light theme available for LightningTip. If you want to use it **add** this to the head tag of your HTML file:
 
@@ -48,7 +48,7 @@ There is a light theme available for LightningTip. If you want to use it **add**
 
 **Do not use LightningTip on XHTML** sites. That causes some weird scaling issues.
 
-That's it! The only two things you need to take care about is keeping the LND node online and making sure that your incoming channels are sufficiently funded to receive tips. LightningTip will take care of everything else.
+That's it! The only things you need to take care of is keeping the LND node and web server online. LightningTip will take care of everything else.
 
 ## How to run ##
 Use your browser to visit either of these:
