@@ -84,9 +84,9 @@ define('EXPIRY','1800');				   //seconds
 
 //Optional EMAIL notifications
 // To disable, leave EMAIL_TO as '' (empty string)
-define('EMAIL_TO'       ,'CHANGE_ME');//empty string disables emails
-define('EMAIL_TO_NAME'  ,'CHANGE_ME');
-define('EMAIL_FROM'     ,'CHANGE_ME');
+define('EMAIL_TO'       ,'CHANGE_ME'); //e.g. 'me@my.domain' Empty string disables emails
+define('EMAIL_TO_NAME'  ,'CHANGE_ME'); //e.g. 'My Name'
+define('EMAIL_FROM'     ,'CHANGE_ME'); //e.g. 'me@my.domain'
 define('EMAIL_FROM_NAME','LightningTip');
 
 ////////  END CHANGE ME SECTION ///////
@@ -203,10 +203,10 @@ function lightningTipSendEmail($to,$to_name,$subject,$body){
   
   if($_GET['testnet']) $subject = "[Testnet] $subject";
   
-  if(false){ //false = use PHPMailer
-	  mail("$to_name <$to>",$subject,$body,"From: $from_name <$from>");  
+  if(true){ //false = use PHPMailer
+	  mail("$to_name <$to>",$subject,$body,"From: ".EMAIL_FROM_NAME." <".EMAIL_FROM.">");  
   } else {
-	  date_default_timezone_set('Australia/Perth');
+      date_default_timezone_set('Australia/Perth');
       require '../PHPMailer/PHPMailerAutoload.php';
       $mail = new PHPMailer;
       $mail->isSMTP();
