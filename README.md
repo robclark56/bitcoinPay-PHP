@@ -2,8 +2,9 @@
 A simple way to accept tips via the Lightning Network on your website. 
 
 If want to tip me you can find my instance of LightningTip ...
-* [mainnet](http://raspibolt.epizy.com/LT/lightningTip.php)
-* [testnet](http://raspibolt.epizy.com/LT/lightningTip.php?testnet=1)
+(Ignore any https certificate errors as these are hosted on a free webserver.)
+* [mainnet](https://raspibolt.epizy.com/LT/lightningTip.php)
+* [testnet](https://raspibolt.epizy.com/LT/lightningTip.php?testnet=1)
 
 <img src="https://i.imgur.com/0mOEgTf.gif" width="240">
 
@@ -11,27 +12,33 @@ If want to tip me you can find my instance of LightningTip ...
 Kudos to [michael1011](https://github.com/michael1011/lightningtip) forthe original LightningTip. The difference between the two pjects are shown in this table.
 
 ||LightningTip|LightningTip-PHP|
-|--|--|
-|Backend|An executable|PHP|
+|--|--|--|
+|Backend|An executable<br>(always running)|PHP|
 |Email notification|Yes|Yes|
 |lnd communication|gRPC|REST|
 |testnet/mainnet selection|No|Yes|
 |Keeps track<br>of tips?|Yes|No|
 
 ## Why PHP? ##
-Installing an executable either on the lnd host, or on a 3rd party web host can be problematic. Using PHP improves prtability and removed the need for a separate executable.
-
+Installing an executable either on the lnd host, or on a 3rd party web host can be problematic. Using PHP improves portability and removes the need for a separate executable running as a service.
+## Security ## 
+The _invoice.macroon_ file limits the functionality available to LightningTip.php to only invoice related functions. Importantly, if someone steals your _invoice.macaroon_, they can NOT spend any of your funds.
+## Prepare LND ##
+* Enable REST on your lnd instance(s). See  the _restlisten_ parameter in the [lnd documentation](https://github.com/lightningnetwork/lnd/blob/master/sample-lnd.conf).
+* Open any necessary firewall ports on your lnd host, and router port forwards as needed.
+* Generate a hex version of the _invoice.macaroon_ file on your lnd instance.
+  * Linux:    `xxd -ps -u -c 1000  /path/to/invoice.macaroon `
+  * Generic:  [http://tomeko.net/online_tools/file_to_hex.php?lang=en](http://tomeko.net/online_tools/file_to_hex.php?lang=en)
+  
 ## How to install
-
-* Get all necessary files for setting up LightningTip-PHP. [download](https://github.com/robclark56/lightningtip/releases) .
-* Enable REST on your lnd instance(s). See  the _restlisten_ parameter in the [lnd documention](https://github.com/lightningnetwork/lnd/blob/master/sample-lnd.conf)
-* Open any necessary firewall ports and/or router port forwards as needed.
+* [Download](https://github.com/robclark56/lightningtip/releases) the 4 files for setting up LightningTip-PHP. .
 * Upload these file to your webserver:
   * lightningTip.php
-  * lightnintTip.js
+  * lightningTip.js
   * lightningTip.css
   * lightningTip_light.css (Optional)
 * Copy the contents of the head tag from `lightningTip.php` into the head section of the HTML file you want to show LightningTip in. The div below the head tag is LightningTip itself. Paste it into any place in the already edited HTML file on your server.
+* Edit lightningTip.php and edit the _CHANGE ME_ section 
 
 There is a light theme available for LightningTip. If you want to use it **add** this to the head tag of your HTML file:
 
@@ -41,48 +48,12 @@ There is a light theme available for LightningTip. If you want to use it **add**
 
 **Do not use LightningTip on XHTML** sites. That causes some weird scaling issues.
 
-Make sure that the executable of **LightningTip is always running** in the background. It is an [API](https://github.com/michael1011/lightningtip/wiki/API-documentation) to connect LND and the widget on your website. **Do not open the URL you are running LightingTip on in your browser.** All this will do is show an error.
-
-If you are not running LightningTip on the same domain or IP address as your webserver, or not on port 8081, change the variable `requestUrl` (which is in the first line) in the file `lightningTip.js` accordingly.
-
-When using LightningTip behind a proxy make sure the proxy supports [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource). Without support for it the users will not see the "Thank you for your tip!" screen.
-
 That's it! The only two things you need to take care about is keeping the LND node online and making sure that your incoming channels are sufficiently funded to receive tips. LightningTip will take care of everything else.
 
-## How to build
-First of all make sure [Golang](https://golang.org/) and [Dep](https://github.com/golang/dep) are both correctly installed. Golang version 1.10 or newer is recommended.
+## How to run ##
+Use your browser to visit either of these:
 
-```
-go get -d github.com/michael1011/lightningtip
-cd $GOPATH/src/github.com/michael1011/lightningtip
-
-make && make install
-```
-
-To start run `$GOPATH/bin/lightningtip` or follow the instructions below to setup a service to run LightningTip automatically.
-
-## Upgrading
-Make sure you stop any running LightningTip process before upgrading, then pull from source as follows:
-
-```
-cd $GOPATH/src/github.com/michael1011/lightningtip
-git pull
-
-make && make install
-```
-
-## Starting LightningTip Automatically
-
-LightningTip can be started automatically via Systemd, or Supervisord, as outlined in the following wiki documentation:
-
-* [Running LightningTip with systemd](https://github.com/michael1011/lightningtip/wiki/Running-LightningTip-with-systemd)
-* [Running LightningTip with supervisord](https://github.com/michael1011/lightningtip/wiki/Running-LightningTip-with-supervisord)
-
-## Reverse Proxy Recipes
-
-In instances where the default LightningTip SSL configuration options are not working, you may want to explore running a reverse proxy to LightningTip as outlined in the following wiki documentation:
-
-* [LightningTip via Apache2 reverse proxy](https://github.com/michael1011/lightningtip/wiki/LightningTip-via-Apache2-reverse-proxy)
-* [LightningTip via Nginx reverse proxy](https://github.com/michael1011/lightningtip/wiki/LightningTip-via-Nginx-reverse-proxy)
+* `https://your.web.server/path/lightningTip.php`
+* `https://your.web.server/path/lightningTip.php?testnet=1`
 
 
