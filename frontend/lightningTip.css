@@ -166,3 +166,7 @@
         transform: rotate(360deg);
     }
 }
+
+#lightningTip.testnet {
+    background-color: #27b09d;
+}
