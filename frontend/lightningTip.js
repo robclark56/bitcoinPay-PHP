@@ -1,13 +1,12 @@
-// Edit this variable if you are not running LightningTip on the same domain or IP address as your webserver or not on port 8081
-// Don't forget the "/" at the end!
-var requestUrl = window.location.protocol + "//" + window.location.hostname + ":8081/";
+///////// CHANGE ME ////////
+var requestUrl = window.location.protocol + "//" + window.location.hostname + "/lightningTip.php";
+///////// END CHANGE ME ////////
 
 // To prohibit multiple requests at the same time
 var running = false;
 
 var invoice;
 var qrCode;
-
 var defaultGetInvoice;
 
 // Data capacities for QR codes with mode byte and error correction level L (7%)
@@ -40,7 +39,15 @@ window.onload = function () {
 
     button.style.height = (button.clientHeight + 1) + "px";
     button.style.width = (button.clientWidth + 1) + "px";
+ 
 };
+
+var testnet = getVal('testnet');  //see if GET param testnet is set  (URL?testnet=1)
+console.log('Testnet = ' + testnet); 
+if ( testnet !== null ) {
+	requestUrl = requestUrl + '?testnet=1';
+	console.log('requestUrl = ' + requestUrl ); 
+}
 
 // TODO: show invoice even if JavaScript is disabled
 // TODO: fix scaling on phones
@@ -50,29 +57,23 @@ function getInvoice() {
         running = true;
 
         var tipValue = document.getElementById("lightningTipAmount");
-
+ 
         if (tipValue.value !== "") {
             if (!isNaN(tipValue.value)) {
-                var data = JSON.stringify({"Amount": parseInt(tipValue.value), "Message": document.getElementById("lightningTipMessage").innerText});
-
                 var request = new XMLHttpRequest();
 
                 request.onreadystatechange = function () {
                     if (request.readyState === 4) {
+						//console.log("RESPONSE: " + request.responseText);
                         try {
                             var json = JSON.parse(request.responseText);
 
                             if (request.status === 200) {
                                 console.log("Got invoice: " + json.Invoice);
                                 console.log("Invoice expires in: " + json.Expiry);
-
-                                var hash = sha256(json.Invoice);
-
-                                console.log("Got hash of invoice: " + hash);
-
                                 console.log("Starting listening for invoice to get settled");
-
-                                listenInvoiceSettled(hash);
+								
+								listenInvoiceSettled(json.r_hash_str);
 
                                 invoice = json.Invoice;
 
@@ -116,8 +117,11 @@ function getInvoice() {
 
                 };
 
-                request.open("POST", requestUrl + "getinvoice", true);
-                request.send(data);
+                request.open("POST", requestUrl , true);
+				request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                var params = "Action=getinvoice&Amount=" + parseInt(tipValue.value) + "&Message=" + encodeURIComponent(document.getElementById("lightningTipMessage").innerText);
+				console.log(params);
+				request.send(params);				
 
                 var button = document.getElementById("lightningTipGetInvoice");
 
@@ -139,33 +143,16 @@ function getInvoice() {
 
 }
 
-function listenInvoiceSettled(hash) {
-    try {
-        var eventSrc = new EventSource(requestUrl + "eventsource");
-
-        eventSrc.onmessage = function (event) {
-            if (event.data === hash) {
-                console.log("Invoice settled");
-
-                eventSrc.close();
-
-                showThankYouScreen();
-            }
-
-        };
-
-    } catch (e) {
-        console.error(e);
-        console.warn("Your browser does not support EventSource. Sending a request to the server every two second to check if the invoice is settled");
-
+function listenInvoiceSettled(r_hash_str) {
         var interval = setInterval(function () {
             var request = new XMLHttpRequest();
 
             request.onreadystatechange = function () {
                 if (request.readyState === 4 && request.status === 200) {
+					//console.log("RESPONSE: " + request.responseText);
                     var json = JSON.parse(request.responseText);
 
-                    if (json.Settled) {
+                    if (json.settled) {
                         console.log("Invoice settled");
 
                         clearInterval(interval);
@@ -177,12 +164,16 @@ function listenInvoiceSettled(hash) {
 
             };
 
-            request.open("POST", requestUrl + "invoicesettled", true);
-            request.send(JSON.stringify({"InvoiceHash": hash}))
+            
+			
+			request.open("POST", requestUrl, true);
+			request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            var params = "Action=invoicesettled&r_hash_str=" + r_hash_str;
+			request.send(params);
 
         }, 2000);
 
-    }
+   // }
 
 }
 
@@ -316,4 +307,9 @@ function divRestorePlaceholder(element) {
     if (element.innerHTML === "<br>" || element.innerHTML === "<div><br></div>") {
         element.innerHTML = "";
     }
+}
+
+function getVal(str) {
+    var v = window.location.search.match(new RegExp('(?:[\?\&]'+str+'=)([^&]+)'));
+    return v ? v[1] : null;
 }
