@@ -146,6 +146,12 @@ function getInvoice() {
 function listenInvoiceSettled(r_hash_str) {
         var interval = setInterval(function () {
             var request = new XMLHttpRequest();
+		
+	    //Prevent multiple calls for same invoice settled over slow networks.
+	    var IsSettled = false;
+            if ( IsSettled == true) {
+              return;
+            }
 
             request.onreadystatechange = function () {
                 if (request.readyState === 4 && request.status === 200) {
