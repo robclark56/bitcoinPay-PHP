@@ -31,14 +31,15 @@ The _invoice.macroon_ file limits the functionality available to LightningTip.ph
   * Generic:  [http://tomeko.net/online_tools/file_to_hex.php?lang=en](http://tomeko.net/online_tools/file_to_hex.php?lang=en)
   
 ## How to install
-* [Download](https://github.com/robclark56/lightningtip/releases) the 4 files for setting up LightningTip-PHP.
-* From the Frontend folder: Upload these file to your webserver:
+* Download the [latest release](https://github.com/robclark56/lightningtip/releases), and unzip.
+* From the _frontend_ folder: Upload these file to your webserver:
   * lightningTip.php
   * lightningTip.js
   * lightningTip.css
   * lightningTip_light.css (Optional)
 * Copy the contents of the head tag from `lightningTip.php` into the head section of the HTML file you want to show LightningTip in. The div below the head tag is LightningTip itself. Paste it into any place in the already edited HTML file on your server.
 * Edit the _CHANGE ME_ section of `lightningTip.php`. This is where you enter the HEX version of your _invoice.macaroon_.
+* Edit the _CHANGE ME_ section of `lightningTip.js`.
 
 There is a light theme available for LightningTip. If you want to use it **add** this to the head tag of your HTML file:
 
