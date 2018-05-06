@@ -73,7 +73,7 @@ function getInvoice() {
                                 console.log("Invoice expires in: " + json.Expiry);
                                 console.log("Starting listening for invoice to get settled");
 								
-								listenInvoiceSettled(json.r_hash_str);
+                                listenInvoiceSettled(json.r_hash_str);
 
                                 invoice = json.Invoice;
 
