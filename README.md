@@ -1,16 +1,37 @@
-# LightningTip
-A simple way to accept tips via the Lightning Network on your website. If want to tip me you can find my instance of LightningTip [here](https://michael1011.at/lightning.html).
+# LightningTip-PHP
+A simple way to accept tips via the Lightning Network on your website. 
+
+If want to tip me you can find my instance of LightningTip ...
+* [mainnet](http://raspibolt.epizy.com/LT/lightningTip.php)
+* [testnet](http://raspibolt.epizy.com/LT/lightningTip.php?testnet=1)
 
 <img src="https://i.imgur.com/0mOEgTf.gif" width="240">
 
+## Credit ##
+Kudos to [michael1011](https://github.com/michael1011/lightningtip) forthe original LightningTip. The difference between the two pjects are shown in this table.
+
+||LightningTip|LightningTip-PHP|
+|--|--|
+|Backend|An executable|PHP|
+|Email notification|Yes|Yes|
+|lnd communication|gRPC|REST|
+|testnet/mainnet selection|No|Yes|
+|Keeps track<br>of tips?|Yes|No|
+
+## Why PHP? ##
+Installing an executable either on the lnd host, or on a 3rd party web host can be problematic. Using PHP improves prtability and removed the need for a separate executable.
+
 ## How to install
-To get all necessary files for setting up LightningTip you can either [download a prebuilt version](https://github.com/michael1011/lightningtip/releases) or [compile from source](#how-to-install).
 
-LightningTip is using [LND](https://github.com/lightningnetwork/lnd) as backend. Please make sure it is installed and fully synced before you install LightningTip.
-
-The default config file location is `$HOME/.lightningtip/lightningTip.conf`. The [sample config](https://github.com/michael1011/lightningtip/blob/master/sample-lightningTip.conf) contains everything you need to know about the configuration. To use a custom config file location use the flag `--config filename`. You can use all keys in the config as command line flag. Command line flags *always* override values in the config.
-
-The next step is embedding LightningTip on your website. Upload all files excluding `lightningTip.html` to your webserver. Copy the contents of the head tag from `lightningTip.html` into the head section of the HTML file you want to show LightningTip in. The div below the head tag is LightningTip itself. Paste it into any place in the already edited HTML file on your server.
+* Get all necessary files for setting up LightningTip-PHP. [download](https://github.com/robclark56/lightningtip/releases) .
+* Enable REST on your lnd instance(s). See  the _restlisten_ parameter in the [lnd documention](https://github.com/lightningnetwork/lnd/blob/master/sample-lnd.conf)
+* Open any necessary firewall ports and/or router port forwards as needed.
+* Upload these file to your webserver:
+  * lightningTip.php
+  * lightnintTip.js
+  * lightningTip.css
+  * lightningTip_light.css (Optional)
+* Copy the contents of the head tag from `lightningTip.php` into the head section of the HTML file you want to show LightningTip in. The div below the head tag is LightningTip itself. Paste it into any place in the already edited HTML file on your server.
 
 There is a light theme available for LightningTip. If you want to use it **add** this to the head tag of your HTML file:
 
