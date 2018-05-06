@@ -160,7 +160,7 @@ function listenInvoiceSettled(r_hash_str) {
 
                     if (json.settled) {
                         console.log("Invoice settled");
-			IsSettled = false;
+			IsSettled = true;
                         clearInterval(interval);
                         showThankYouScreen();
                     }
