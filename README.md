@@ -32,7 +32,7 @@ The _invoice.macroon_ file limits the functionality available to LightningTip.ph
   
 ## How to install
 * [Download](https://github.com/robclark56/lightningtip/releases) the 4 files for setting up LightningTip-PHP.
-* Upload these file to your webserver:
+* From the Frontend folder: Upload these file to your webserver:
   * lightningTip.php
   * lightningTip.js
   * lightningTip.css
