@@ -155,14 +155,13 @@ function listenInvoiceSettled(r_hash_str) {
 
             request.onreadystatechange = function () {
                 if (request.readyState === 4 && request.status === 200) {
-					//console.log("RESPONSE: " + request.responseText);
+		   //console.log("RESPONSE: " + request.responseText);
                     var json = JSON.parse(request.responseText);
 
                     if (json.settled) {
                         console.log("Invoice settled");
-
+			IsSettled = false;
                         clearInterval(interval);
-
                         showThankYouScreen();
                     }
 
