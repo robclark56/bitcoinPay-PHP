@@ -173,7 +173,7 @@ switch($_POST['Action']){
     <script async defer src="lightningTip.js"></script>
 </head>
 
-<div id="lightningTip">
+<div id="lightningTip" <?php if($_GET['testnet']) echo ' class="testnet"';?>>
     <p id="lightningTipLogo">⚡</p>
     <a>Send a tip via Lightning</a>
 
