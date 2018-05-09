@@ -43,7 +43,7 @@ Desired=Unknown/Install/Remove/Purge/Hold
 +++-======================-================-================-=================================================
 ii  php-curl               1:7.0+49         all              CURL module for PHP [default]
 ```
-If you see `dpkg-query: no packages found matching php-curl` then install missing  as follows.
+If you see `no packages found matching php-curl` then install as follows.
 ```
 $ sudo apt-get update
 $ sudo apt-get install php-curl
