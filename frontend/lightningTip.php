@@ -7,37 +7,39 @@ CREDIT
 ///////////////////////////////////////////////////////////////
 	
 lightningTip.php
-    Companion file for lightningTip.js
+	Companion file for lightningTip.js
 
 FUNCTIONS
- If called with 
-   * no POST parameters:
-       Displays the lightningTip HTML page
-   * with POST parameters
-       Perfoms backend functions. I.e. querying the lnd instance and passing results back to lightningTip.js
+If called with 
+	* no POST parameters:
+		Displays the lightningTip HTML page
+	* with POST parameters
+		Performs backend functions. I.e. querying the lnd instance and passing results back to lightningTip.js
    
-	
-Syntax:  https://your.domain/lightningTip.php[?testnet=1]
-            Displays lightningTip HTML
-            The backend queries:
-			 * the mainnet lnd if testnet is not set as a GET parameter 
-			 * the testnet lnd if the testnet GET paramenter is set and non-zero			 
+SYNTAX:  
+	https://your.domain/lightningTip.php[?testnet=1]
+		Displays lightningTip HTML
+		The backend queries:
+			* the mainnet lnd if testnet is not set as a GET parameter 
+			* the testnet lnd if the testnet GET paramenter is set and non-zero			 
 			   
-         https://your.domain/lightningTip.php[?testnet=1]
-               Method: POST
-			   Parameters: Action    = 'getinvoice'
-			               Amount    = xxxxx (satoshis)
-						   Message   = 'Some Text'
-               Returns: JSON {"Invoice":"xxxx","Expiry":"yyyy","r_hash_str":"zzzz"}
-			            xxxx = LN Payment request
-						yyyy = expiry seconds
-						zzzz = HEX representation of 32 byte base64 r_hash
+	https://your.domain/lightningTip.php[?testnet=1]
+		Method: POST
+		Parameters: 
+			Action    = 'getinvoice'
+			Amount    = xxxxx (satoshis)
+			Message   = 'Some Text'
+		Returns: JSON {"Invoice":"xxxx","Expiry":"yyyy","r_hash_str":"zzzz"}
+			xxxx = LN Payment request
+			yyyy = expiry seconds
+			zzzz = HEX representation of 32 byte base64 r_hash
 						
-		 https://your.domain/lightningTip.php[?testnet=1]
-		       Method: POST
-			   Parameters: Action     = 'invoicesettled'
-			               r_hash_str = HEX encoded 32 byte version of the Invoice r_hash
-               returns: JSON <Invoice>	
+	https://your.domain/lightningTip.php[?testnet=1]
+		Method: POST
+		Parameters: 
+			Action     = 'invoicesettled'
+			r_hash_str = HEX encoded 32 byte version of the Invoice r_hash
+		Returns: JSON <Invoice>	
 
 Design:
     [Web Browser]<----HTTP---->[.php,.css,.js]<----HTTP---->[LND]																		   
@@ -49,38 +51,40 @@ Design:
 
 			   
 Instructions:
- 1. LND:
-      Make sure 
-        * REST is enabled. 
-	    * Firewalls and/or router port forwarders are updated so that 
+1. LND:
+	Make sure 
+		* REST is enabled. 
+		* Firewalls and/or router port forwarders are updated so that 
 		  the REST port is accessable from the web server hosting lightningTip.
 	   
- 2. Convert the invoice.macaroon from your lnd to HEX.
-      Linux:    xxd -ps -u -c 1000  /path/to/invoice.macaroon 
-	  Generic:  http://tomeko.net/online_tools/file_to_hex.php?lang=en   
+2. Convert the invoice.macaroon from your lnd to HEX.
+	Linux:    xxd -ps -u -c 1000  /path/to/invoice.macaroon 
+	Generic:  http://tomeko.net/online_tools/file_to_hex.php?lang=en   
  
- 3. Update the CHANGE_ME section below.
+3. Update the CHANGE_ME section below.
  
- 4. Install these files on your webserver. 
-    Note: Due to JavaScript security, lightningTip.php must be hosted at the same domain as lightningTip.js
+4. Install these files on your webserver. 
+	Note: Due to JavaScript security, lightningTip.php must be hosted at the same domain as lightningTip.js
 	
-		lightningTip.js
-		lightningTip.php
-		lightningTip.css
-		lightningTip_light.css (optional)
+	lightningTip.js
+	lightningTip.php
+	lightningTip.css
+	lightningTip_light.css (optional)
 		
- 5. Open with browser: https://your.domain/path/lightningTip.php
+5. Open with browser: 
+	https://your.domain/path/lightningTip.php
+	https://your.domain/path/lightningTip.php?testnet=1
  
 */
 
 ////////  CHANGE ME SECTION ///////
 define('LND_IP','CHANGE_ME'); //IP address or FQDN (domain name) of lnd server
 define('LND_PORT_MAINNET','CHANGE_ME');
-define('LND_PORT_TESTNET','CHANGE_ME');      //Optional
-define('INVOICE_MACAROON_HEX',             //No spaces
+define('LND_PORT_TESTNET','CHANGE_ME');  	//Optional
+define('INVOICE_MACAROON_HEX',			//No spaces
        'CHANGE_ME'
 	   );
-define('EXPIRY','1800');				   //seconds
+define('EXPIRY','1800');			//seconds
 
 //Optional EMAIL notifications
 // To disable, leave EMAIL_TO as '' (empty string)
@@ -103,9 +107,10 @@ function getPaymentRequest($memo='',$satoshi=0,$expiry=EXPIRY){
  $lnd_port            = LND_PORT;
  $invoice_macaroon_hex= INVOICE_MACAROON_HEX;
  
- $data = json_encode(array("memo"   => (TESTNET=='true'?'[TESTNET] ':'').$memo,
-                           "value"  => "$satoshi",
-						   "expiry" =>  $expiry
+ $data = json_encode(array(
+			"memo"   => (TESTNET=='true'?'[TESTNET] ':'').$memo,
+ 			"value"  => "$satoshi",
+			"expiry" =>  $expiry
 						  )     
                      ); 					 
  $ch = curl_init("https://$lnd_ip:$lnd_port/v1/invoices");
@@ -140,23 +145,26 @@ function lookupInvoice($r_hash_str){
 switch($_POST['Action']){
 
  case 'getinvoice':
-    $PR = getPaymentRequest($_POST['Message'],$_POST['Amount'], EXPIRY);		
-    lightningTipSendEmail(EMAIL_TO, EMAIL_TO_NAME,'GetInvoice',print_r($PR,1));
-    echo json_encode(array('Invoice'   =>$PR->payment_request,
-	                       'Expiry'    =>EXPIRY,
-						   'r_hash_str'=>bin2hex(base64_decode($PR->r_hash))
-						   )
-				     );
+ 	$PR = getPaymentRequest($_POST['Message'],$_POST['Amount'], EXPIRY);
+	//Comment out next 1 line if you do not want to receive GetInvoice messages
+	lightningTipSendEmail(EMAIL_TO, EMAIL_TO_NAME,'[LightningTip] GetInvoice',print_r($PR,1));
+ 	
+	echo json_encode(array(
+		'Invoice'   =>$PR->payment_request,
+		'Expiry'    =>EXPIRY,
+		'r_hash_str'=>bin2hex(base64_decode($PR->r_hash))
+		)
+	);
   exit;
 
  case 'invoicesettled':
   $Invoice = lookupInvoice($_POST['r_hash_str']);  
   if(isset($Invoice->settled) && $Invoice->settled){
 	  lightningTipSendEmail(
-			EMAIL_TO, EMAIL_TO_NAME,
-			'[LND] Invoice Settled: '.$Invoice->value. ' sat',
-			"Memo: $Invoice->memo\nValue: $Invoice->value (sat)"
-			);
+		EMAIL_TO, EMAIL_TO_NAME,
+		'[LightningTip] Invoice Settled: '.$Invoice->value. ' sat',
+		"Memo: $Invoice->memo\nValue: $Invoice->value (sat)"
+		);
   }
   echo json_encode($Invoice);
   exit;
