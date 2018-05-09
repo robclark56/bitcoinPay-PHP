@@ -30,7 +30,29 @@ The _invoice.macroon_ file limits the functionality available to LightningTip.ph
   * Linux:    `xxd -ps -u -c 1000  /path/to/invoice.macaroon `
   * Generic:  [http://tomeko.net/online_tools/file_to_hex.php?lang=en](http://tomeko.net/online_tools/file_to_hex.php?lang=en)
   
-## How to install
+## Prepare Web Server ##
+Your webserver will need to have the _php_ and _curl_ packages available.
+
+On a typical Debian webserver you can check as follows. The example below shows that these ARE installed.
+```bash
+$ dpkg -l php curl
+Desired=Unknown/Install/Remove/Purge/Hold
+| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
+|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
+||/ Name                   Version          Architecture     Description
++++-======================-================-================-=================================================
+ii  curl                   7.52.1-5+deb9u5  amd64            command line tool for transferring data with URL 
+un  php                    <none>           <none>           (no description available)
+```
+If you see `dpkg-query: no packages found matching xxxxx` then install missing packages as follows.
+```
+$ sudo apt-get update
+$ sudo apt-get install php
+$ sudo apt-get install curl
+```
+
+
+## How to install ##
 * Download the [latest release](https://github.com/robclark56/lightningtip/releases), and unzip.
 * From the _frontend_ folder: Upload these files to your webserver:
   * lightningTip.php
