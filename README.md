@@ -31,24 +31,22 @@ The _invoice.macroon_ file limits the functionality available to LightningTip.ph
   * Generic:  [http://tomeko.net/online_tools/file_to_hex.php?lang=en](http://tomeko.net/online_tools/file_to_hex.php?lang=en)
   
 ## Prepare Web Server ##
-Your webserver will need to have the _php_ and _curl_ packages available.
+Your webserver will need to have the _php-curl_ package installed. 
 
-On a typical Debian webserver you can check as follows. The example below shows that these ARE installed.
+On a typical Debian webserver you can check as follows. The example below shows that it is installed.
 ```bash
-$ dpkg -l php curl
+$ dpkg -l php-curl
 Desired=Unknown/Install/Remove/Purge/Hold
 | Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
 |/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
 ||/ Name                   Version          Architecture     Description
 +++-======================-================-================-=================================================
-ii  curl                   7.52.1-5+deb9u5  amd64            command line tool for transferring data with URL 
-un  php                    <none>           <none>           (no description available)
+ii  php-curl               1:7.0+49         all              CURL module for PHP [default]
 ```
-If you see `dpkg-query: no packages found matching xxxxx` then install missing packages as follows.
+If you see `dpkg-query: no packages found matching php-curl` then install missing  as follows.
 ```
 $ sudo apt-get update
-$ sudo apt-get install php
-$ sudo apt-get install curl
+$ sudo apt-get install php-curl
 ```
 
 
