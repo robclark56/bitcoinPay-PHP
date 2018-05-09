@@ -33,7 +33,7 @@ The _invoice.macroon_ file limits the functionality available to LightningTip.ph
 ## Prepare Web Server ##
 Your webserver will need to have the _php-curl_ package installed. 
 
-On a typical Debian webserver you can check as follows. The example below shows that it is installed.
+On a typical Linux webserver you can check as follows. The example below shows that it is installed.
 ```bash
 $ dpkg -l php-curl
 Desired=Unknown/Install/Remove/Purge/Hold
