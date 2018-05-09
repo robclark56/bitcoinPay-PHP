@@ -162,7 +162,7 @@ switch($_POST['Action']){
   if(isset($Invoice->settled) && $Invoice->settled){
 	  lightningTipSendEmail(
 		EMAIL_TO, EMAIL_TO_NAME,
-		'[LightningTip] Invoice Settled: '.$Invoice->value. ' sat',
+		"[LightningTip] Invoice Settled: $Invoice->value sat",
 		"Memo: $Invoice->memo\nValue: $Invoice->value (sat)"
 		);
   }
