@@ -19,6 +19,9 @@ Kudos to [michael1011](https://github.com/michael1011/lightningtip) for the orig
 |testnet/mainnet selection|No|Yes|
 |Keeps track<br>of tips?|Yes|No|
 
+## Requirements ##
+* one [lnd](https://github.com/lightningnetwork/lnd) instance
+* a webserver that supports [PHP](http://www.php.net/) and [curl](https://curl.haxx.se/)
 ## Why PHP? ##
 Installing an executable either on the lnd host, or on a 3rd party web host can be problematic. Using PHP improves portability and removes the need for a separate executable running as a service.
 ## Security ## 
