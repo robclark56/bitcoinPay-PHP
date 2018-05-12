@@ -61,7 +61,7 @@ $ sudo apt-get install php-curl
 * Copy the contents of the head tag from `lightningPay.php` into the head section of the HTML file you want to show LightningTip in. The div below the head tag is LightningTip itself. Paste it into any place in the already edited HTML file on your server.
 
 
-There is a light theme available for LightningPay. If you want to use it **add** this to the head tag of your HTML file:
+There is a light theme available for LightningPay. If you want to use it, uncomment this line in your lightningPay.php file:
 
 ```
 <link rel="stylesheet" href="lightningPay_light.css">
@@ -72,14 +72,18 @@ There is a light theme available for LightningPay. If you want to use it **add**
 That's it! The only things you need to take care of is keeping the LND node and web server online. LightningPay will take care of everything else.
 
 ## How to run ##
-Use your browser to visit either of these:
+Use your browser to visit these URLs:
 
 * `https://your.web.server/path/StoreCheckout.php`
+* `https://your.web.server/path/StoreCheckout.php?order_id=100`
 * `https://your.web.server/path/StoreCheckout.php?testnet=1`
+* `https://your.web.server/path/StoreCheckout.php?testnet=1&order_id=100`
 
 or you can check my test sites here:
 
-* [mainnet](https://raspibolt.epizy.com/LP/StoreCheckout.php)
-* [testnet](https://raspibolt.epizy.com/LP/StoreCheckout.php?testnet=1)
+* [mainnet (USD 80.00)](https://raspibolt.epizy.com/LP/StoreCheckout.php)
+* [mainnet (USD 0.10)](https://raspibolt.epizy.com/LP/StoreCheckout.php&order_id=100)
+* [testnet (USD 80.00)](https://raspibolt.epizy.com/LP/StoreCheckout.php?testnet=1)
+* [testnet (USD 0.10)](https://raspibolt.epizy.com/LP/StoreCheckout.php?testnet=1&order_id=100)
 
 
