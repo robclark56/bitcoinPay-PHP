@@ -149,18 +149,13 @@ switch($_POST['Action']){
     <meta charset="utf-8">
     <title>LightningPay</title>
     <link rel="stylesheet" href="lightningPay.css">
+    <!-- <link rel="stylesheet" href="lightningPay_light.css"> -->
     <script async defer src="https://cdn.rawgit.com/kazuhikoarase/qrcode-generator/886a247e/js/qrcode.js"></script>
     <script async defer src="lightningPay.js"></script>
 </head>
 
 <body>
-<?php 
-if($testnet){
-// echo "POST ".print_r($_POST,1);
-// echo "  Currency:".$_POST['currency']. " ExchRate: $ExchRate Sats: $satoshi";
-}
 
-?>
 <div id="lightningPay" <?php if($_GET['testnet']) echo ' class="testnet"';?>>
  <p id="lightningPayLogo">⚡</p>
  <a>Send a Payment via Lightning</a>
