@@ -1,28 +1,42 @@
 <?php
 /*
-  Example eCommerce checkout page for testing LightningPay
+ LightningPay  - Example eCommerce checkout page
+ 
+ Example URLs
+  https://my.web.server/path/StoreCheckout.php
+  https://my.web.server/path/StoreCheckout.php?order_id=100
+  https://my.web.server/path/StoreCheckout.php?testnet=1
+  https://my.web.server/path/StoreCheckout.php?testnet=1&order_id=100
 */
 
 define('CURRENCY','USD');
 $testnet = $_GET['testnet'] > 0;
 $chain_name = $testnet?'Testnet':'Mainnet';
-$order_id   = 42;
-$orders[$order_id]['products'][] = 
+$order_id=$_GET['order_id']?$_GET['order_id']:42;	//Default order = 42. Cheaper alternative = 100
+
+$orders[100]['products'][] = 
+		array(	
+			'qty' => 1,
+			'price_ea' => 0.10,
+			'desc' =>'HODL Sticker'
+		);
+		
+$orders[42]['products'][] = 
 		array(
-			'qty' =>1,
+			'qty' => 1,
 			'price_ea' => 10.00,
 			'desc' =>'Pan Galactic Gargle Blaster'
 		);
-$orders[$order_id]['products'][] = 
+$orders[42]['products'][] = 
 		array(
-			'qty' =>2,
-			'price_ea' =>5.00,
+			'qty' => 2,
+			'price_ea' => 5.00,
 			'desc' =>'Book of Vogon Poetry'
 		);
-$orders[$order_id]['products'][] = 
+$orders[42]['products'][] = 
 		array(
-			'qty' =>3,
-			'price_ea' =>20.00,
+			'qty' => 3,
+			'price_ea' => 20.00,
 			'desc' =>'HODL Teeshirts'
 		);
 ?>
@@ -31,7 +45,10 @@ $orders[$order_id]['products'][] =
 <head>
 <meta charset="UTF-8">
 <title>Store Checkout</title>
-<style> body { background-color: <?php echo $testnet?'CornflowerBlue ':'SkyBlue';?>;} </style>
+<style> 
+body { background-color: <?php echo $testnet?'CornflowerBlue ':'SkyBlue';?>;} 
+table{ background-color: white;} 
+</style>
 </head>
 
 <body>
@@ -57,7 +74,7 @@ $orders[$order_id]['products'][] =
   echo "<tr><td>$qty<td>$desc<td align='right'>$ $price<td align='right'>$ $total</tr>";
  }
  echo '<tr><th colspan="3" align="right">Total<th align="right">$ '.number_format($grand_total,2).'</tr>';
- echo '<tr><th colspan="3" align="right">&nbsp;<td>'; 
+ echo '<tr><th colspan="4" align="right">'; 
  ?>
  <form action="lightningPay.php<?php echo $testnet?'?testnet=1':'';?>" method="post"> 
   <input type="hidden" name="memo" value="Order <?php echo $order_id;?>">  
@@ -65,9 +82,10 @@ $orders[$order_id]['products'][] =
   <input type="hidden" name="currency" value="<?php echo CURRENCY;?>"> 
   <input type="hidden" name="amount_format" value="<?php echo '$'.number_format($grand_total,2);?>">
   <button type="submit">Pay Now</button><br>
-</form>
+ </form>
  <?php  echo '</tr>';?>
 </table>
 
 </body>
+
 </html>
