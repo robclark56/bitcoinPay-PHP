@@ -1,5 +1,3 @@
-# UNDER CONSTRUCTION #
-
 # LightningPay-PHP
 A simple way to accept order payments via the Lightning Network on your eCommerce website. 
 ![LightningPay GIF](images/lightningPayDemo.gif)
