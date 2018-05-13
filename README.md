@@ -51,27 +51,15 @@ $ sudo apt-get install php-curl
 * Download the [latest release](https://github.com/robclark56/lightningPay-PHP/releases), and unzip.
 * From the _resources_ folder: Upload these files to your webserver:
   * StoreCheckout.php
-  * lightningPay.conf 
+  * lightningPay.conf
   * lightningPay.php
   * lightningPay.js
   * lightningPay.css
   * lightningPay_light.css (Optional)
 * Edit `lightningPay.conf`. This is where you enter the HEX version of your _invoice.macaroon_.
 * Edit the _CHANGE ME_ section of `lightningPay.js`.
-* Copy the contents of the head tag from `lightningPay.php` into the head section of the HTML file you want to show LightningTip in. The div below the head tag is LightningTip itself. Paste it into any place in the already edited HTML file on your server.
 
-
-There is a light theme available for LightningPay. If you want to use it, uncomment this line in your lightningPay.php file:
-
-```
-<link rel="stylesheet" href="lightningPay_light.css">
-```
-
-**Do not use LightningPay on XHTML** sites. That causes some weird scaling issues.
-
-That's it! The only things you need to take care of is keeping the LND node and web server online. LightningPay will take care of everything else.
-
-## How to run ##
+## How to test ##
 Use your browser to visit these URLs:
 
 * `https://your.web.server/path/StoreCheckout.php`
@@ -86,4 +74,16 @@ or you can check my test sites here:
 * [testnet (USD 80.00)](https://raspibolt.epizy.com/LP/StoreCheckout.php?testnet=1)
 * [testnet (USD 0.10)](https://raspibolt.epizy.com/LP/StoreCheckout.php?testnet=1&order_id=100)
 
+## How to Use ##
+Copy the contents of the head tag from `lightningPay.php` into the head section of the HTML file you want to show LightningTip in. The div below the head tag is LightningTip itself. Paste it into any place in the already edited HTML file on your server.
 
+
+There is a light theme available for LightningPay. If you want to use it, uncomment this line in your lightningPay.php file:
+
+```
+<link rel="stylesheet" href="lightningPay_light.css">
+```
+
+**Do not use LightningPay on XHTML** sites. That causes some weird scaling issues.
+
+That's it! The only things you need to take care of is keeping the LND node and web server online. LightningPay will take care of everything else.
