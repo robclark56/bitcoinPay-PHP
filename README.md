@@ -54,8 +54,9 @@ $ sudo apt-get install php-curl
   * lightningPay.js
   * lightningPay.css
   * lightningPay_light.css (Optional)
-* Edit `lightningPay.conf`. This is where you enter the HEX version of your _invoice.macaroon_.
-* Edit the _CHANGE ME_ section of `lightningPay.js`.
+* Edit 
+  * `lightningPay.conf`. This is where you enter the HEX version of your _invoice.macaroon_.
+  * the _CHANGE ME_ section of `lightningPay.js`.
 
 ## How to test ##
 Use your browser to visit these URLs:
