@@ -1,0 +1,38 @@
+#lightningPay > a {
+    font-weight: 600 !important;
+}
+
+#lightningPay {
+    background-color: #FFFFFF !important;
+
+    border: 2px #BDBDBD solid !important;
+
+    color: #FFB300 !important;
+
+}
+
+.lightningPayInput {
+    border: 1px #BDBDBD solid !important;
+
+    background-color: #FFFFFF !important;
+}
+
+.lightningPayButton {
+    color: #FFFFFF !important;
+
+    background-color: #FFB300 !important;
+}
+
+#lightningPayError {
+    color: #D50000 !important;
+
+    font-weight: 600 !important;
+}
+
+#lightningPayCopy {
+    border-right: 1px solid #FFFFFF !important;
+}
+
+#lightningPayExpiry {
+    font-weight: 600 !important;
+}
