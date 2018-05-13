@@ -68,7 +68,7 @@ Use your browser to visit these URLs:
 or you can check my test sites here:
 
 * [mainnet (USD 80.00)](https://raspibolt.epizy.com/LP/StoreCheckout.php)
-* [mainnet (USD 0.10)](https://raspibolt.epizy.com/LP/StoreCheckout.php&order_id=100)
+* [mainnet (USD 0.10)](https://raspibolt.epizy.com/LP/StoreCheckout.php?order_id=100)
 * [testnet (USD 80.00)](https://raspibolt.epizy.com/LP/StoreCheckout.php?testnet=1)
 * [testnet (USD 0.10)](https://raspibolt.epizy.com/LP/StoreCheckout.php?testnet=1&order_id=100)
 
