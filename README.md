@@ -13,7 +13,7 @@ LightningPay-PHP is based on [LightningTip-PHP](https://github.com/robclark56/li
 * one [lnd](https://github.com/lightningnetwork/lnd) instance
 * a webserver that supports [PHP](http://www.php.net/) and [curl](https://curl.haxx.se/)
 ## Security ## 
-The _invoice.macroon_ file limits the functionality available to LightningTip.php to only invoice related functions. Importantly, if someone steals your _invoice.macaroon_, they can NOT spend any of your funds.
+The _invoice.macroon_ file limits the functionality available to LightningPay.php to only invoice related functions. Importantly, if someone steals your _invoice.macaroon_, they can NOT spend any of your funds.
 ## eCommerce Example ##
 The intended audience for this project is users that have an existing online eCommerce site. Typically the customer ends up at a _checkout confirmation_ webpage with some _Pay Now_ button(s).
 
