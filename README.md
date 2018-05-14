@@ -74,7 +74,7 @@ or you can check my test sites here:
 * [testnet (USD 0.10)](https://raspibolt.epizy.com/LP/StoreCheckout.php?testnet=1&order_id=100)
 
 ## How to Use ##
-Copy the contents of the head tag from `lightningPay.php` into the head section of the HTML file you want to show LightningTip in. The div below the head tag is LightningTip itself. Paste it into any place in the already edited HTML file on your server.
+Copy the contents of the head tag from `lightningPay.php` into the head section of the HTML file you want to show LightningPay in. The div below the head tag is LightningPay itself. Paste it into any place in the already edited HTML file on your server.
 
 
 There is a light theme available for LightningPay. If you want to use it, uncomment this line in your lightningPay.php file:
