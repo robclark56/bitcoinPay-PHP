@@ -49,13 +49,13 @@ $ sudo apt-get install php-curl
 * Download the [latest release](https://github.com/robclark56/lightningPay-PHP/releases), and unzip.
 * From the _resources_ folder: Upload these files to your webserver:
   * StoreCheckout.php
-  * lightningPay.conf
+  * lightningPay_conf.php
   * lightningPay.php
   * lightningPay.js
   * lightningPay.css
   * lightningPay_light.css (Optional)
 * Edit 
-  * `lightningPay.conf`. This is where you enter the HEX version of your _invoice.macaroon_.
+  * `lightningPay_conf.php`. This is where you enter the HEX version of your _invoice.macaroon_.
   * the _CHANGE ME_ section of `lightningPay.js`.
 
 ## How to test ##
