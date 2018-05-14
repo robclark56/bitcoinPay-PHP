@@ -66,13 +66,13 @@ Instructions:
 	Note: Due to JavaScript security, lightningPay.php must be hosted at the same domain as lightningPay.js
 	
 	StoreCheckout.php
-	lightningPay.conf 
+	lightningPay_conf.php 
 	lightningPay.js
 	lightningPay.php
 	lightningPay.css
 	lightningPay_light.css (optional)
 	
-4. Update the lightningPay.conf file.
+4. Update the lightningPay_conf.php file.
 		
 5. Open with browser: 
 	https://your.domain/path/StoreCheckout.php
@@ -80,7 +80,7 @@ Instructions:
  
 */
 
-include "lightningPay.conf";
+include "lightningPay_conf.php";
 
 $amount=$_POST['amount'];
 $amount_format=$_POST['amount_format'];
