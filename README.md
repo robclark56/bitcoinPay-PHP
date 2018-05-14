@@ -3,9 +3,9 @@ A simple way to accept order payments via the Lightning Network on your eCommerc
 ![LightningPay GIF](images/lightningPayDemo.gif)
 
 If want to tip me you can use my LightningTip as below.
-(Ignore any https certificate errors as this is hosted on a free webserver and you will not be entering any sensitive data.)
-* [mainnet](https://raspibolt.epizy.com/LT/lightningTip.php)
-* [testnet](https://raspibolt.epizy.com/LT/lightningTip.php?testnet=1)
+(_https_ not used as this is hosted on a free web server without SSL certificates. You will not be entering any sensitive data.)
+* [mainnet](http://raspibolt.epizy.com/LT/lightningTip.php)
+* [testnet](http://raspibolt.epizy.com/LT/lightningTip.php?testnet=1)
 
 ## Credit ##
 LightningPay-PHP is based on [LightningTip-PHP](https://github.com/robclark56/lightningtip-PHP), which in turn is based on [LightningTip](https://github.com/michael1011/lightningtip/blob/master/README.md) by [michael1011](https://github.com/michael1011/lightningtip).
