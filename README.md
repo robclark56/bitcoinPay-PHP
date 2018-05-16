@@ -68,10 +68,12 @@ Use your browser to visit these URLs:
 
 or you can check my test sites here:
 
-* [mainnet (USD 80.00)](https://raspibolt.epizy.com/LP/StoreCheckout.php)
-* [mainnet (USD 0.10)](https://raspibolt.epizy.com/LP/StoreCheckout.php?order_id=100)
-* [testnet (USD 80.00)](https://raspibolt.epizy.com/LP/StoreCheckout.php?testnet=1)
-* [testnet (USD 0.10)](https://raspibolt.epizy.com/LP/StoreCheckout.php?testnet=1&order_id=100)
+(_https_ not used as this is hosted on a free web server without SSL certificates. You will not be entering any sensitive data.)
+
+* [mainnet (USD 80.00)](http://raspibolt.epizy.com/LP/StoreCheckout.php)
+* [mainnet (USD 0.10)](http://raspibolt.epizy.com/LP/StoreCheckout.php?order_id=100)
+* [testnet (USD 80.00)](http://raspibolt.epizy.com/LP/StoreCheckout.php?testnet=1)
+* [testnet (USD 0.10)](http://raspibolt.epizy.com/LP/StoreCheckout.php?testnet=1&order_id=100)
 
 ## How to Use ##
 Copy the contents of the head tag from `lightningPay.php` into the head section of the HTML file you want to show LightningPay in. The div below the head tag is LightningPay itself. Paste it into any place in the already edited HTML file on your server.
