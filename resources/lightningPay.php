@@ -43,11 +43,11 @@ SYNTAX:
 		Returns: JSON <Invoice>	
 
 Design:
-    [Web Browser]<----HTTP---->[.php,.css,.js]<----HTTP---->[LND]																		   
+    [Web Browser,.js]<----HTTP---->[.php,.css]<----HTTP---->[LND]																		   
                                                                /\
                                                                |
                                                                |
-    [LN Wallet] --------------------gRPC-----------------------+	
+    [LN Wallet] --------------------BOLT-----------------------+	
 
 
 			   
