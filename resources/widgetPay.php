@@ -1,8 +1,8 @@
 <?php
 /*
 	
-lightningPay.php
-	Companion file for lightningPay.js
+widgetPay.php
+	Companion file for widgetPay.js
 
 FUNCTIONS
 If called with 
@@ -12,7 +12,7 @@ If called with
 		Performs backend functions. I.e. querying the lnd instance and passing results back to lightningPay.js
    
 SYNTAX:  
-	https://your.domain/lightningPay.php[?testnet=1]
+	https://your.domain/widgetPay.php[?testnet=1]
 	This is typically called in this mode from an eCommerce checkout page
 		Method: POST
 		Parameters: 
@@ -24,7 +24,7 @@ SYNTAX:
 			webpage for customer to confirm and request payment request
 								 
 			   
-	https://your.domain/lightningPay.php[?testnet=1]
+	https://your.domain/widgetPay.php[?testnet=1]
 		Method: POST
 		Parameters: 
 			Action    = 'getinvoice'
@@ -35,7 +35,7 @@ SYNTAX:
 			yyyy = expiry seconds
 			zzzz = HEX representation of 32 byte base64 r_hash
 						
-	https://your.domain/lightningPay.php[?testnet=1]
+	https://your.domain/widgetPay.php[?testnet=1]
 		Method: POST
 		Parameters: 
 			Action     = 'invoicesettled'
@@ -66,13 +66,13 @@ Instructions:
 	Note: Due to JavaScript security, lightningPay.php must be hosted at the same domain as lightningPay.js
 	
 	StoreCheckout.php
-	lightningPay_conf.php 
-	lightningPay.js
-	lightningPay.php
-	lightningPay.css
-	lightningPay_light.css (optional)
+	widgetPay_conf.php 
+	widgetPay.js
+	widgetPay.php
+	widgetPay.css
+	widgetPay_light.css (optional)
 	
-4. Update the lightningPay_conf.php file.
+4. Update the widgetPay_conf.php file.
 		
 5. Open with browser: 
 	https://your.domain/path/StoreCheckout.php
@@ -80,7 +80,7 @@ Instructions:
  
 */
 
-include "lightningPay_conf.php";
+include "widgetPay_conf.php";
 
 $amount=$_POST['amount'];
 $amount_format=$_POST['amount_format'];
@@ -99,7 +99,7 @@ if(empty($json)){
 ?>
 <!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"><title>Lightning Pay Error</title></head>
+<head><meta charset="utf-8"><title>Widget Pay Error</title></head>
 <body><h2>Error</h2>Unable to get Exchange Rate</body>
 </html>
 <?php
@@ -115,7 +115,7 @@ switch($_POST['Action']){
  case 'getinvoice':
  	$PR = getPaymentRequest($_POST['Message'],$_POST['Amount'], EXPIRY);
 	//Comment out next 1 line if you do not want to receive GetInvoice messages
-	lightningPaySendEmail(EMAIL_TO, EMAIL_TO_NAME,'[LightningPay] GetInvoice',print_r($PR,1));
+	lightningPaySendEmail(EMAIL_TO, EMAIL_TO_NAME,'[widgetPay] GetInvoice',print_r($PR,1));
  	
 	echo json_encode(array(
 		'Invoice'   =>$PR->payment_request,
@@ -130,7 +130,7 @@ switch($_POST['Action']){
   if(isset($Invoice->settled) && $Invoice->settled){
 	  lightningPaySendEmail(
 		EMAIL_TO, EMAIL_TO_NAME,
-		"[LightningPay] Invoice Settled: $Invoice->value sat",
+		"[widgetPay] Invoice Settled: $Invoice->value sat",
 		"Memo: $Invoice->memo\nValue: $Invoice->value (sat)"
 		);
   }
@@ -147,25 +147,25 @@ switch($_POST['Action']){
 <html>
 <head>
     <meta charset="utf-8">
-    <title>LightningPay</title>
-    <link rel="stylesheet" href="lightningPay.css">
-    <!-- <link rel="stylesheet" href="lightningPay_light.css"> -->
+    <title>widgetPay</title>
+    <link rel="stylesheet" href="widgetPay.css">
+    <!-- <link rel="stylesheet" href="widgetPay_light.css"> -->
     <script async defer src="https://cdn.rawgit.com/kazuhikoarase/qrcode-generator/886a247e/js/qrcode.js"></script>
-    <script async defer src="lightningPay.js"></script>
+    <script async defer src="widgetPay.js"></script>
 </head>
 
 <body>
 
-<div id="lightningPay" <?php if($_GET['testnet']) echo ' class="testnet"';?>>
- <p id="lightningPayLogo">⚡</p>
- <a>Send a Payment via Lightning</a>
- <div id="lightningPayInputs">
-  <input type="text" class="lightningPayInput" value="<?php echo "&#8383 $BTC";?>" disabled><br>
-  <input type="text" class="lightningPayInput" value="<?php echo "$currency $amount_format";?>" disabled><br>
-  <input type="text" class="lightningPayInput" id="lightningPayMessage" value="<?php echo $_POST['memo']?>" disabled><br>
-  <input type="hidden" id="lightningPayAmount" value="<?php echo $satoshi;?>">
-  <button class="lightningPayButton" id="lightningPayGetInvoice" onclick="getInvoice()"><?php if($_GET['testnet']) echo '[Testnet] ';?>Get request</button>
-  <div>  <a id="lightningPayError"></a> </div>
+<div id="widgetPay" <?php if($_GET['testnet']) echo ' class="testnet"';?>>
+ <p id="widgetPayLogo">⚡</p>
+ <a>Send a Payment via widget</a>
+ <div id="widgetPayInputs">
+  <input type="text" class="widgetPayInput" value="<?php echo "&#8383 $BTC";?>" disabled><br>
+  <input type="text" class="widgetPayInput" value="<?php echo "$currency $amount_format";?>" disabled><br>
+  <input type="text" class="widgetPayInput" id="widgetPayMessage" value="<?php echo $_POST['memo']?>" disabled><br>
+  <input type="hidden" id="widgetPayAmount" value="<?php echo $satoshi;?>">
+  <button class="widgetPayButton" id="widgetPayGetInvoice" onclick="getInvoice()"><?php if($_GET['testnet']) echo '[Testnet] ';?>Get request</button>
+  <div>  <a id="widgetPayError"></a> </div>
  </div>
 </div>
 </body>
@@ -211,7 +211,7 @@ function getPaymentRequest($memo='',$satoshi=0,$expiry=EXPIRY){
  return json_decode($response);
 }	
 
-function lightningPaySendEmail($to,$to_name,$subject,$body){
+function widgetPaySendEmail($to,$to_name,$subject,$body){
   // By default, this function uses the built in PHP mail() function.
   // If your hosting service does not allow PHP mail(), then PHPMailer may work for you. 
   //   See more info here: https://infinityfree.net/support/how-to-send-email-with-gmail-smtp/
