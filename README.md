@@ -1,6 +1,19 @@
-# LightningPay-PHP
-A simple way to accept order payments via the Lightning Network on your eCommerce website. 
-![LightningPay GIF](images/lightningPayDemo.gif)
+# NOWHERE NEAR READY ... UNDER CONSTRUCTION #
+
+
+# widgetPay-PHP
+A simple and modularlzed template that can be used to accept eCommerce payments on your eCommerce website. The Javascript frontend runs on the customer's browser, and passes order details the PHP backend. Details of how to pay are then passed back to the frontend for display to the customer.
+
+![widgetPay GIF](images/lwidgetPayDemo.gif)
+
+## Features ##
+* Modular code
+* Timeout support
+* QR Code support
+* Copy support
+* Error handling
+* Payment Received support
+* Optional parament support (e.g. mainnet/testnet for crypto payments)
 
 If want to tip me you can use my LightningTip as below.
 (_https_ not used as this is hosted on a free web server without SSL certificates. You will not be entering any sensitive data.)
@@ -8,22 +21,15 @@ If want to tip me you can use my LightningTip as below.
 * [testnet](http://raspibolt.epizy.com/LT/lightningTip.php?testnet=1)
 
 ## Credit ##
-LightningPay-PHP is based on [LightningTip-PHP](https://github.com/robclark56/lightningtip-PHP), which in turn is based on [LightningTip](https://github.com/michael1011/lightningtip/blob/master/README.md) by [michael1011](https://github.com/michael1011/lightningtip).
+widhgetPay-PHP is based on [LightningTip-PHP](https://github.com/robclark56/lightningtip-PHP), which in turn is based on [LightningTip](https://github.com/michael1011/lightningtip/blob/master/README.md) by [michael1011](https://github.com/michael1011/lightningtip).
 ## Requirements ##
-* one [lnd](https://github.com/lightningnetwork/lnd) instance
 * a webserver that supports [PHP](http://www.php.net/) and [curl](https://curl.haxx.se/)
 ## Security ## 
-The _invoice.macroon_ file limits the functionality available to LightningPay.php to only invoice related functions. Importantly, if someone steals your _invoice.macaroon_, they can NOT spend any of your funds.
+This is a template with dummy inputs and outputs. No security issues.
 ## eCommerce Example ##
 The intended audience for this project is users that have an existing online eCommerce site. Typically the customer ends up at a _checkout confirmation_ webpage with some _Pay Now_ button(s).
 
-In this project we include a very simple dummy eCommerce checkout page that serves as an example of how to deploy _lightningPay_. 
-## Prepare LND ##
-* Enable REST on your lnd instance(s). See  the _restlisten_ parameter in the [lnd documentation](https://github.com/lightningnetwork/lnd/blob/master/sample-lnd.conf).
-* Open any necessary firewall ports on your lnd host, and router port-forwards as needed.
-* Generate a hex version of the _invoice.macaroon_ file on your lnd instance.
-  * Linux:    `xxd -ps -u -c 1000  /path/to/invoice.macaroon `
-  * Generic:  [http://tomeko.net/online_tools/file_to_hex.php?lang=en](http://tomeko.net/online_tools/file_to_hex.php?lang=en)
+In this project we include a very simple dummy eCommerce checkout page that serves as an example of how to deploy _widgetPay_. 
   
 ## Prepare Web Server ##
 Your webserver will need to have the _php-curl_ package installed. 
@@ -49,14 +55,14 @@ $ sudo apt-get install php-curl
 * Download the [latest release](https://github.com/robclark56/lightningPay-PHP/releases), and unzip.
 * From the _resources_ folder: Upload these files to your webserver:
   * StoreCheckout.php
-  * lightningPay_conf.php
-  * lightningPay.php
-  * lightningPay.js
-  * lightningPay.css
-  * lightningPay_light.css (Optional)
+  * widgetPay_conf.php
+  * widgetPay.php
+  * widgetPay.js
+  * widgetPay.css
+  * widget_light.css (Optional)
 * Edit 
-  * `lightningPay_conf.php`. This is where you enter the HEX version of your _invoice.macaroon_.
-  * the _CHANGE ME_ section of `lightningPay.js`.
+  * `widget_conf.php`. ??????
+  * the _CHANGE ME_ section of `widgetPay.js`.
 
 ## How to test ##
 Use your browser to visit these URLs:
@@ -70,21 +76,18 @@ or you can check my test sites here:
 
 (_https_ not used as this is hosted on a free web server without SSL certificates. You will not be entering any sensitive data.)
 
-* [mainnet (USD 80.00)](http://raspibolt.epizy.com/LP/StoreCheckout.php)
-* [mainnet (USD 0.10)](http://raspibolt.epizy.com/LP/StoreCheckout.php?order_id=100)
-* [testnet (USD 80.00)](http://raspibolt.epizy.com/LP/StoreCheckout.php?testnet=1)
-* [testnet (USD 0.10)](http://raspibolt.epizy.com/LP/StoreCheckout.php?testnet=1&order_id=100)
+* [Order for USD 80.00](http://raspibolt.epizy.com/WP/StoreCheckout.php)
+
 
 ## How to Use ##
-Copy the contents of the head tag from `lightningPay.php` into the head section of the HTML file you want to show LightningPay in. The div below the head tag is LightningPay itself. Paste it into any place in the already edited HTML file on your server.
+Copy the contents of the head tag from `widgetPay.php` into the head section of the HTML file you want to show widgetPay in. The div below the head tag is widgetPay itself. Paste it into any place in the already edited HTML file on your server.
 
 
-There is a light theme available for LightningPay. If you want to use it, uncomment this line in your lightningPay.php file:
+There is a light theme available for widgetPay. If you want to use it, uncomment this line in your widgetPay.php file:
 
 ```
-<link rel="stylesheet" href="lightningPay_light.css">
+<link rel="stylesheet" href="widgetPay_light.css">
 ```
 
-**Do not use LightningPay on XHTML** sites. That causes some weird scaling issues.
+**Do not use widgetPay on XHTML** sites. That causes some weird scaling issues.
 
-That's it! The only things you need to take care of is keeping the LND node and web server online. LightningPay will take care of everything else.
