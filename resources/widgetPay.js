@@ -1,5 +1,5 @@
 ///////// CHANGE ME ////////
-var requestUrl = window.location.protocol + "//" + window.location.hostname + "/path_to_lightningpay/lightningPay.php";
+var requestUrl = window.location.protocol + "//" + window.location.hostname + "/path_to_widgetgpay/widgetPay.php";
 ///////// END CHANGE ME ////////
 
 // To prohibit multiple requests at the same time
@@ -35,11 +35,9 @@ var qrCodeDataCapacities = [
 // TODO: solve this without JavaScript
 // Fixes weird bug which moved the button up one pixel when its content was changed
 window.onload = function () {
-    var button = document.getElementById("lightningPayGetInvoice");
-
+    var button = document.getElementById("widgetPayGetInvoice");
     button.style.height = (button.clientHeight + 1) + "px";
     button.style.width = (button.clientWidth + 1) + "px";
- 
 };
 
 var testnet = getVal('testnet');  //see if GET param testnet is set  (URL?testnet=1)
@@ -56,7 +54,7 @@ function getInvoice() {
     if (running === false) {
         running = true;
 
-        var payValue = document.getElementById("lightningPayAmount");
+        var payValue = document.getElementById("widgetPayAmount");
  
         if (payValue.value !== "") {
             if (!isNaN(payValue.value)) {
@@ -75,20 +73,20 @@ function getInvoice() {
                                 invoice = json.Invoice;
 
                                 // Update UI
-                                var wrapper = document.getElementById("lightningPay");
+                                var wrapper = document.getElementById("widgetPay");
                                 wrapper.innerHTML = "<a>Scan this payment request with your Lightning Wallet</a>";
-                                wrapper.innerHTML += "<input type='text' class='lightningPayInput' id='lightningPayInvoice' onclick='copyInvoiceToClipboard()' value='" + invoice + "' readonly>";
+                                wrapper.innerHTML += "<input type='text' class='widgetPayInput' id='lightningPayInvoice' onclick='copyInvoiceToClipboard()' value='" + invoice + "' readonly>";
                                 wrapper.innerHTML += "<div id='lightningPayQR'></div>";
                                 wrapper.innerHTML += "<div id='lightningPayTools'>" +
-                                    "<button class='lightningPayButton' id='lightningPayCopy' onclick='copyInvoiceToClipboard()'>Copy</button>" +
-                                    "<button class='lightningPayButton' id='lightningPayOpen'>Open</button>" +
+                                    "<button class='widgetPayButton' id='widgetPayPayCopy' onclick='copyInvoiceToClipboard()'>Copy</button>" +
+                                    "<button class='widgetPayButton' id='widgetPayPayOpen'>Open</button>" +
                                     "<a id='lightningPayExpiry'></a>" +
                                     "</div>";
-                                starTimer(json.Expiry, document.getElementById("lightningPayExpiry"));
+                                starTimer(json.Expiry, document.getElementById("widgetPayExpiry"));
 
-                                // Fixes bug which caused the content of #lightningPayTools to be visually outside of #lightningPay
-                                document.getElementById("lightningPayTools").style.height = document.getElementById("lightningPayCopy").clientHeight + "px";
-                                document.getElementById("lightningPayOpen").onclick = function () {
+                                // Fixes bug which caused the content of #widgetPayTools to be visually outside of #widgetPay
+                                document.getElementById("widgetPayTools").style.height = document.getElementById("widgetPayCopy").clientHeight + "px";
+                                document.getElementById("widgetPayOpen").onclick = function () {
                                     location.href = "lightning:" + json.Invoice;
                                 };
                                 showQRCode();
@@ -104,10 +102,10 @@ function getInvoice() {
                 };
                 request.open("POST", requestUrl , true);
 		request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                var params = "Action=getinvoice&Amount=" + parseInt(payValue.value) + "&Message=" + encodeURIComponent(document.getElementById("lightningPayMessage").value);
+                var params = "Action=getinvoice&Amount=" + parseInt(payValue.value) + "&Message=" + encodeURIComponent(document.getElementById("widgetPayMessage").value);
 		            console.log(params);
 		            request.send(params);				
-                var button = document.getElementById("lightningPayGetInvoice");
+                var button = document.getElementById("widgetPayPayGetInvoice");
                 defaultGetInvoice = button.innerHTML;
                 button.innerHTML = "<div class='spinner'></div>";
             } else {
@@ -143,17 +141,13 @@ function listenInvoiceSettled(r_hash_str) {
                         clearInterval(interval);
                         showThankYouScreen();
                     }
-
                 }
-
             };
-
-            
-			
-			request.open("POST", requestUrl, true);
-			request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            var params = "Action=invoicesettled&r_hash_str=" + r_hash_str;
-			request.send(params);
+            	
+		request.open("POST", requestUrl, true);
+		request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            	var params = "Action=invoicesettled&r_hash_str=" + r_hash_str;
+		request.send(params);
 
         }, 2000);
 
@@ -163,9 +157,8 @@ function listenInvoiceSettled(r_hash_str) {
 
 function showThankYouScreen() {
     var wrapper = document.getElementById("lightningPay");
-
-    wrapper.innerHTML = "<p id=\"lightningPayLogo\">⚡</p>";
-    wrapper.innerHTML += "<a id='lightningPayFinished'>Thank you for your Payment!</a>";
+    wrapper.innerHTML = "<p id=\"widgetPayLogo\">⚡</p>";
+    wrapper.innerHTML += "<a id='widgetPayFinished'>Thank you for your Payment!</a>";
 }
 
 function starTimer(duration, element) {
@@ -174,12 +167,9 @@ function starTimer(duration, element) {
     var interval = setInterval(function () {
         if (duration > 1) {
             duration--;
-
             showTimer(duration, element);
-
         } else {
             showExpired();
-
             clearInterval(interval);
         }
 
@@ -205,10 +195,10 @@ function showTimer(duration, element) {
 }
 
 function showExpired() {
-    var wrapper = document.getElementById("lightningPay");
+    var wrapper = document.getElementById("widgetPay");
 
-    wrapper.innerHTML = "<p id=\"lightningPayLogo\">⚡</p>";
-    wrapper.innerHTML += "<a id='lightningPayFinished'>Your payment request expired!</a>";
+    wrapper.innerHTML = "<p id=\"widgetPayLogo\">⚡</p>";
+    wrapper.innerHTML += "<a id='widgetPayFinished'>Your payment request expired!</a>";
 }
 
 function addLeadingZeros(value) {
@@ -216,16 +206,13 @@ function addLeadingZeros(value) {
 }
 
 function showQRCode() {
-    var element = document.getElementById("lightningPayQR");
+    var element = document.getElementById("widgetPayQR");
 
     createQRCode();
 
     element.innerHTML = qrCode;
-
-    var size = document.getElementById("lightningPayInvoice").clientWidth + "px";
-
+    var size = document.getElementById("widgetPayInvoice").clientWidth + "px";
     var qrElement = element.children[0];
-
     qrElement.style.height = size;
     qrElement.style.width = size;
 }
@@ -235,13 +222,10 @@ function createQRCode() {
 
     // Just in case an invoice bigger than expected gets created
     var typeNumber = 26;
-
     for (var i = 0; i < qrCodeDataCapacities.length; i++) {
         var dataCapacity = qrCodeDataCapacities[i];
-
         if (invoiceLength < dataCapacity.capacity) {
             typeNumber = dataCapacity.typeNumber;
-
             break;
         }
 
@@ -258,26 +242,20 @@ function createQRCode() {
 }
 
 function copyInvoiceToClipboard() {
-    var element = document.getElementById("lightningPayInvoice");
+    var element = document.getElementById("widgetPayInvoice");
 
     element.select();
-
     document.execCommand('copy');
-
     console.log("Copied invoice to clipboard");
 }
 
 function showErrorMessage(message) {
     running = false;
-
     console.error(message);
-
-    var error = document.getElementById("lightningPayError");
-
+    var error = document.getElementById("widgetPayError");
     error.parentElement.style.marginTop = "0.5em";
     error.innerHTML = message;
-
-    var button = document.getElementById("lightningPayGetInvoice");
+    var button = document.getElementById("widgetPayGetInvoice");
 
     // Only necessary if it has a child (div with class spinner)
     if (button.children.length !== 0) {
