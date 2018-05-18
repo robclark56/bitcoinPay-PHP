@@ -8,12 +8,13 @@ A simple and modularlzed template that can be used to accept eCommerce payments 
 
 ## Features ##
 * Modular code
-* Timeout support
-* QR Code support
-* Copy support
-* Error handling
-* Payment Received support
-* Optional parament support (e.g. mainnet/testnet for crypto payments)
+* Support for:
+  * Timeout
+  * QR Code
+  * Copy to clipboard
+  * Error handling
+  * Payment Received 
+  * Optional parameters  (e.g. mainnet/testnet for crypto payments)
 
 If want to tip me you can use my LightningTip as below.
 (_https_ not used as this is hosted on a free web server without SSL certificates. You will not be entering any sensitive data.)
