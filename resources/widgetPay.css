@@ -1,4 +1,4 @@
-#lightningPay {
+#widgetPay {
     width: 12em;
     padding: 1em;
     background-color: #212121;
@@ -10,7 +10,7 @@
     text-align: center;
 }
 
-.lightningPayInput {
+.widgetPayInput {
 //    width: 100%;
     display: inline-block;
     padding: 6px 10px;
@@ -25,7 +25,7 @@
     overflow-y: hidden;
 }
 
-.lightningPayButton {
+.widgetPayButton {
     padding: 0.4em 1em;
     font-size: 17px;
     color: #212121;
@@ -36,26 +36,26 @@
     cursor: pointer;
 }
 
-.lightningPayButton:focus {
+.widgetPayButton:focus {
     outline: none;
 }
 
-.lightningPayButton::-moz-focus-inner {
+.widgetPayButton::-moz-focus-inner {
     outline: none;
     border: 0;
 }
 
-#lightningPayLogo {
+#widgetPayLogo {
     margin-top: 0;
     margin-bottom: 0.6em;
     font-size: 25px;
 }
 
-#lightningPayInputs {
+#widgetPayInputs {
     margin-top: 0.8em;
 }
 
-#lightningPayMessage {
+#widgetPayMessage {
     min-height: 55px;
     margin-top: 0.5em;
     padding: 8px 10px;
@@ -66,53 +66,52 @@
 }
 
 /* Hack for using placeholders on divs */
-#lightningPayMessage:empty:before {
+#widgetPayMessage:empty:before {
     content: attr(placeholder);
     color: gray;
 }
 
-#lightningPayGetInvoice {
+#widgetPayGetInvoice {
     margin-top: 1em;
 }
 
-#lightningPayError {
+#widgetPayError {
     font-size: 17px;
-
     color: #F44336;
 }
 
-#lightningPayInvoice {
+#widgetPayInvoice {
     margin-top: 1em;
     margin-bottom: 0.5em;
 }
 
-#lightningPayQR {
+#widgetPayQR {
     margin-bottom: 0.8em;
 }
 
-#lightningPayTools {
+#widgetPayTools {
     height: 100px;
 }
 
-#lightningPayCopy {
+#widgetPayCopy {
     border-right: 1px solid #F5F5F5;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     float: left;
 }
 
-#lightningPayOpen {
+#widgetPayOpen {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     float: left;
 }
 
-#lightningPayExpiry {
+#widgetPayExpiry {
     padding: 0.3em 0;
     float: right;
 }
 
-#lightningPayFinished {
+#widgetPayFinished {
     margin-bottom: 0.2em;
     display: block;
 }
@@ -136,6 +135,6 @@
     }
 }
 
-#lightningPay.testnet {
+#widgetPay.testnet {
     background-color: #27b09d;
 }
