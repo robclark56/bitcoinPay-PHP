@@ -20,6 +20,7 @@ The files in this project will allow you to safely accept Bitcoin payments on yo
   * Multiple wallets
   * Live exchange rate conversions between Fiat and BTC
   * Encryption protected messaging from bitcoinPay back to the eCommerce site.
+  * CSS formatting
 
 If want to tip me you can use my LightningTip as below.
 (_https_ not used as this is hosted on a free web server without SSL certificates. You will not be entering any sensitive data.)
@@ -46,7 +47,20 @@ The basic flow is as follows:
 1. Javascript displays QR Payment Request 
 1. PHP file continuously monitors blockchain for matching transctions
 1. Customer makes payment with wallet
-1. If/When payment has sufficient confirmations => Secure message sent back to eCommerce site with payment status and details.
+1. If/When payment has sufficient confirmations => Secure message sent back to eCommerce site with payment status ('Paid' or 'Underpaid') and details.
+
+```
+                                       
+    [eStore]<----- 'Paid'/'Underpaid'------\ 
+        |                                  |
+        |                                  ^
+        \/                                 |
+    [Web Browser,.js,.css]<----HTTP---->[.php]--[database]
+                                           |
+                                   [Blockchain Explorer]
+                                           |
+    [Bitcoin Wallet] -----------------[Blockchain]	
+```
 ## Prepare Web Server ##
 xxx
 
