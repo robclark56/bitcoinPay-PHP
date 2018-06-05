@@ -61,11 +61,8 @@ The basic flow is as follows:
     [Bitcoin Wallet] -----------------[Blockchain]	
 ```
 ## Extended Public Keys ##
-This project takes advantage of the concept of _Extended Public Keys_ (xpub). 
-
-For a full understanding, see [Mastering Bitcoin, Andreas M. Antonopolous, Chapter 5](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch05.asciidoc).
-
-![HD Wallet Image](images/HD-Wallet.png)
+This project takes advantage of the concept of _Extended Public Keys_ (xpub). For a full understanding, see [Mastering Bitcoin, Andreas M. Antonopoulos, Chapter 5](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch05.asciidoc).
+![HD Wallet Image](images/HD-wallet.png)
 
 The important things to note are:
 * An xpub can generate 
@@ -74,6 +71,37 @@ The important things to note are:
 * Each level of the tree in the above image has a different xpub.
   * The xpub at the master ('m') level can generate addresses for many different coins (Bitcoin, Litecoin,...). We do not want to use the xpub from this level. 
   * The xpub from the bitcoin level is what is needed for this project.
+  
+### Where do I get my xpub? ###
+Your wallet software will give you your xpub:
+
+1. Electrum: Open the wallet you want to receive funds into. Wallet --> Information.
+1. Make your own: 
+  * Go to https://iancoleman.io/bip39/
+  * Generate a new 12-word seed
+  * Select Coin: _BTC-Bitcoin_ for mainnet, or _BTC-Bitcoin Testnet_ for testnet
+  * Copy the _Account Extended Public Key_ (not the _BIP32 Extended Public Key_)
+1. Other wallets: Check your documentation.
+
+### How does bitcoinPay-PHP get the next receiving address from the xpub? ###
+There is an undocumented feature at the [smartbit.com.au API](https://www.smartbit.com.au/api). If you give an xpub to the _address_ API call, it returns the next un-used receiving address.
+
+[Try it!](https://api.smartbit.com.au/v1/blockchain/address/xpub6DFUsfUukGFu5E1rjZZpwGXVw8wUcrvhxzgFgCFCdyT3nxsbQoax9BLME3pY8j2j81ewhF95gbSRiBnmseGy69E2ZYKbHrmBjwtyXkGeSES)
+
+### What the?   xpub, ypub, zpub, tpub, upub, vpub ###
+The 1st character of an Extended Public Key tells you what sort of wallet it comes from. As this is written, the [smartbit.com.au API](https://www.smartbit.com.au/api) supports only _xpub_ and _tpub_.
+
+| Address Type  | mainnet | testnet|
+|----:|-------|-------|
+|P2PKH| xpub | tpub|
+| (eg)|(1xxxxxx)|(mxxxxx)|
+|P2PKH| ypub | upub|
+|   (eg)|(3xxxxx) | (2xxxx) |
+|Bech32| zpub | vpub|
+|    (eg)| (bc1xxx) |  ?? | 
+
+
+
 
 ## Prepare Web Server ##
 xxx
