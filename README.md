@@ -2,17 +2,17 @@
 
 
 # bitcoinPay-PHP
-The files in this project will allow you to safely accept Bitcoin payments on your online store.
+The files in this project will allow you to safely accept Bitcoin payments on your online store (eStore).
 
 ![bitcoinPay GIF](images/bitcoinPayDemo.gif)
 
 ## Features ##
 * Support for:
   * mainnet and testnet
-  * P2PKH addresses (e.g. 1xxxxx").
+  * P2PKH addresses (e.g. 1xxxxxxxx).
     * Segwit support is not available as this is written. If/When Segwit address generation is supported at  https://www.smartbit.com.au/api then this code (without change) will support Segwit.
-  * Exchange Rate Fluctuation Protection. Protection against exchange rate fluctuation in cases of late payment broadcasts and/or late transaction mining. 
-  * Address Re-use.
+  * Exchange Rate fluctuation protection. Protection in cases of late payment broadcasts and/or late transaction mining. 
+  * Each new payment to an unused bitcoin address. With support for multiple payments to same address.
   * QR Code Payment Request
   * Copy to clipboard
   * Error handling
@@ -41,16 +41,15 @@ In this project we include a very simple dummy eCommerce checkout page that serv
 ## Design ##
 The basic flow is as follows:
 
-1. eCommerce site displays a shopping cart page with a total payable (Fiat currency)
+1. eStore displays a shopping cart page with a total payable (Fiat currency)
 1. User clicks _Pay Button_  => New Javascript page displays a price in BTC
 1. User clicks _Get Payment Request_ => PHP file responds with Payment Request
 1. Javascript displays QR Payment Request 
 1. PHP file continuously monitors blockchain for matching transctions
 1. Customer makes payment with wallet
-1. If/When payment has sufficient confirmations => Secure message sent back to eCommerce site with payment status ('Paid' or 'Underpaid') and details.
+1. If/When payment has sufficient confirmations => Secure message sent back to eStore with payment status ('Paid' or 'Underpaid') and details.
 
-```
-                                       
+```                                    
     [eStore]<----- 'Paid'/'Underpaid'------\ 
         |                                  |
         |                                  ^
