@@ -1,20 +1,25 @@
 # NOWHERE NEAR READY ... UNDER CONSTRUCTION #
 
 
-# widgetPay-PHP
-A simple and modularlzed template that can be used to accept eCommerce payments on your eCommerce website. The Javascript frontend runs on the customer's browser, and passes order details the PHP backend. Details of how to pay are then passed back to the frontend for display to the customer.
+# bitcoinPay-PHP
+The files in this project will allow you to safely accept Bitcoin payments on your online store.
 
-![widgetPay GIF](images/lwidgetPayDemo.gif)
+![bitcoinPay GIF](images/bitcoinPayDemo.gif)
 
 ## Features ##
-* Modular code
 * Support for:
-  * Timeout
-  * QR Code
+  * mainnet and testnet
+  * P2PKH addresses (e.g. 1xxxxx").
+    * Segwit support is not available as this is written. If/When Segwit address generation is supported at  https://www.smartbit.com.au/api then this code (without change) will support Segwit.
+  * Exchange Rate Fluctuation Protection. Protection against exchange rate fluctuation in cases of late payment broadcasts and/or late transaction mining. 
+  * Address Re-use.
+  * QR Code Payment Request
   * Copy to clipboard
   * Error handling
-  * Payment Received 
-  * Optional parameters  (e.g. mainnet/testnet for crypto payments)
+  * Variable Confirmations. E.g. buying a low value sticker requires only 1 confirmation. Buying a car requires 6 confirmations.
+  * Multiple wallets
+  * Live exchange rate conversions between Fiat and BTC
+  * Encryption protected messaging from bitcoinPay back to the eCommerce site.
 
 If want to tip me you can use my LightningTip as below.
 (_https_ not used as this is hosted on a free web server without SSL certificates. You will not be entering any sensitive data.)
@@ -22,34 +27,28 @@ If want to tip me you can use my LightningTip as below.
 * [testnet](http://raspibolt.epizy.com/LT/lightningTip.php?testnet=1)
 
 ## Credit ##
-widhgetPay-PHP is based on [LightningTip-PHP](https://github.com/robclark56/lightningtip-PHP), which in turn is based on [LightningTip](https://github.com/michael1011/lightningtip/blob/master/README.md) by [michael1011](https://github.com/michael1011/lightningtip).
+bitcoinPay-PHP is based on [LightningTip-PHP](https://github.com/robclark56/lightningtip-PHP), which in turn is based on [LightningTip](https://github.com/michael1011/lightningtip/blob/master/README.md) by [michael1011](https://github.com/michael1011/lightningtip).
 ## Requirements ##
-* a webserver that supports [PHP](http://www.php.net/) and [curl](https://curl.haxx.se/)
+* a webserver that supports [PHP](http://www.php.net/) and [mySQL](https://www.mysql.com/).
 ## Security ## 
-This is a template with dummy inputs and outputs. No security issues.
+At no point do you enter any of your bitcoin private keys. No hacker can spend your bitcoins. 
 ## eCommerce Example ##
 The intended audience for this project is users that have an existing online eCommerce site. Typically the customer ends up at a _checkout confirmation_ webpage with some _Pay Now_ button(s).
 
-In this project we include a very simple dummy eCommerce checkout page that serves as an example of how to deploy _widgetPay_. 
+In this project we include a very simple dummy eCommerce checkout page that serves as an example of how to deploy _bitcoinPay_. 
   
-## Prepare Web Server ##
-Your webserver will need to have the _php-curl_ package installed. 
+## Design ##
+The basic flow is as follows:
 
-On a typical Linux webserver you can check as follows. The example below shows that it is installed.
-```bash
-$ dpkg -l php-curl
-Desired=Unknown/Install/Remove/Purge/Hold
-| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
-|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
-||/ Name                   Version          Architecture     Description
-+++-======================-================-================-=================================================
-ii  php-curl               1:7.0+49         all              CURL module for PHP [default]
-```
-If you see `no packages found matching php-curl` then install as follows.
-```
-$ sudo apt-get update
-$ sudo apt-get install php-curl
-```
+1. eCommerce site displays a shopping cart page with a total payable (Fiat currency)
+1. User clicks _Pay Button_  => New Javascript page displays a price in BTC
+1. User clicks _Get Payment Request_ => PHP file responds with Payment Request
+1. Javascript displays QR Payment Request 
+1. PHP file continuously monitors blockchain for matching transctions
+1. Customer makes payment with wallet
+1. If/When payment has sufficient confirmations => Secure message sent back to eCommerce site with payment status and details.
+## Prepare Web Server ##
+xxx
 
 
 ## How to install ##
