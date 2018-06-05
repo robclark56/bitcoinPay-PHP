@@ -4,7 +4,7 @@
 # bitcoinPay-PHP
 The files in this project will allow you to safely accept Bitcoin payments on your online store (eStore).
 
-![bitcoinPay GIF](images/bitcoinPayDemo.gif)
+![bitcoinPay GIF](images/bitcoinPay_demo.gif)
 
 ## Features ##
 * Support for:
