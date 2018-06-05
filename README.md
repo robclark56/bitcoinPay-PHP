@@ -60,6 +60,21 @@ The basic flow is as follows:
                                            |
     [Bitcoin Wallet] -----------------[Blockchain]	
 ```
+## Extended Public Keys ##
+This project takes advantage of the concept of _Extended Public Keys_ (xpub). 
+
+For a full understanding, see [Mastering Bitcoin, Andreas M. Antonopolous, Chapter 5](https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch05.asciidoc).
+
+![HD Wallet Image](images/HD-Wallet.png)
+
+The important things to note are:
+* An xpub can generate 
+  * ALL of the public keys  in your wallet, so can generate all the addresses in your wallet.
+  * NONE of the private keys in your wallet, so can not be used to spend your bitcoins.
+* Each level of the tree in the above image has a different xpub.
+  * The xpub at the master ('m') level can generate addresses for many different coins (Bitcoin, Litecoin,...). We do not want to use the xpub from this level. 
+  * The xpub from the bitcoin level is what is needed for this project.
+
 ## Prepare Web Server ##
 xxx
 
