@@ -119,8 +119,8 @@ The cron job runs periodically to check pending payments. `bitcoinPay.php`is des
  | :---: | :---: | :---: | :---: |
  |Yes|Yes|True|Paid|
  |Yes|Yes|False|Paid|
- |Yes|No|True|Pid|
- |Yes|No|False|Under-paid|
+ |Yes|No|True|Paid|
+ |Yes|No|False|Underpaid|
  |No|N/A|N/A|Not Tracked|
 
 
