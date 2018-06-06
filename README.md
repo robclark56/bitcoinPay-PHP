@@ -159,45 +159,46 @@ After you have created your database you should have this information:
 |Host||Often is _localhost_|
 |Database name|||
 
-
-
-## How to install ##
-* Download the [latest release](https://github.com/robclark56/lightningPay-PHP/releases), and unzip.
-* From the _resources_ folder: Upload these files to your webserver:
-  * StoreCheckout.php
-  * widgetPay_conf.php
-  * widgetPay.php
-  * widgetPay.js
-  * widgetPay.css
-  * widget_light.css (Optional)
-* Edit 
-  * `widget_conf.php`. ??????
-  * the _CHANGE ME_ section of `widgetPay.js`.
-
-## How to test ##
+## INSTALLATION ##
+* Create a folder on your webserver to host the bitcoinPay files. Consult your webserver documentation for details on where html files are stored.
+  * e.g.: `.../public_html/bitcoinPay`
+  * e.g.: `.../var/www/html/bitcoinPay`
+* Download the [latest release](https://github.com/robclark56/bitcoinPay-PHP/releases), and unzip.
+* Upload all files from the unzipped _resources_ folder to your webserver folder:
+* Edit files.
+  * __wallet_mainnet.php__: Enter your xpub value.
+  * __wallet_testnet.php__: Enter your tpub value.
+  * __bitcoinPay_conf.php__: Edit  values as needed. Leave _WALLET_DEFAULT_ set to _wallet_testnet_.
+  * __StoreCallback.php__: Edit the CHANGE_ME section.
+  * __bitcoinPay.js__: Edit the CHANGE_ME section.
+  
+## TESTING ##
 Use your browser to visit these URLs:
 
 * `https://your.web.server/path/StoreCheckout.php`
 * `https://your.web.server/path/StoreCheckout.php?order_id=100`
-* `https://your.web.server/path/StoreCheckout.php?testnet=1`
-* `https://your.web.server/path/StoreCheckout.php?testnet=1&order_id=100`
+* `https://your.web.server/path/StoreCheckout.php?wallet=wallet_testnet`
+* `https://your.web.server/path/StoreCheckout.php?wallet=wallet_mainnet`
+* `https://your.web.server/path/StoreCheckout.php?wallet=wallet_mainnet&order_id=100`
 
 or you can check my test sites here:
 
 (_https_ not used as this is hosted on a free web server without SSL certificates. You will not be entering any sensitive data.)
 
-* [Order for USD 80.00](http://raspibolt.epizy.com/WP/StoreCheckout.php)
+* [Order for USD 80.00 (mainnet)](http://raspibolt.epizy.com/BP/StoreCheckout.php) CAREFULL: Don't send me real BTC.
+* [Order for USD 5.00 (testnet)](http://raspibolt.epizy.com/BP/StoreCheckout.php?wallet=wallet_testnet&order_id=100)
 
 
-## How to Use ##
-Copy the contents of the head tag from `widgetPay.php` into the head section of the HTML file you want to show widgetPay in. The div below the head tag is widgetPay itself. Paste it into any place in the already edited HTML file on your server.
+## LIVE USEAGE ##
+Copy the contents of the head tag from `bitcoinPay.php` into the head section of the HTML file you want to show bitcoinPay in. The div below the head tag is bitcoinPay itself. Paste it into any place in the already edited HTML file on your server.
 
+Edit __bitcoinPay_conf.php__ to set the default wallet to your mainnet wallet.
 
-There is a light theme available for widgetPay. If you want to use it, uncomment this line in your widgetPay.php file:
+There is a light theme available for bitcoinPay. If you want to use it, uncomment this line in your bitcoinPay.php file:
 
 ```
-<link rel="stylesheet" href="widgetPay_light.css">
+<link rel="stylesheet" href="bitcoinPay_light.css">
 ```
 
-**Do not use widgetPay on XHTML** sites. That causes some weird scaling issues.
+**Do not use bitcoinPay on XHTML** sites. That causes some weird scaling issues.
 
