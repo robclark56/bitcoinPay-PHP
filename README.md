@@ -102,7 +102,7 @@ The 1st character of an Extended Public Key tells you what sort of wallet it com
 
 [More info ...](https://support.samourai.io/article/49-xpub-s-ypub-s-zpub-s)
 
-## [MONITORING FOR PAYMENTS](#anchors-in-markdown) ##
+## MONITORING FOR PAYMENTS ##
 This is done by a [cron job](https://en.wikipedia.org/wiki/Cron). The timing logic is as below. _EXPIRY_SECONDS_ & _MINE_SECONDS_ are set in the configuration file.
 
 * __EXPIRY_SECONDS__ defines a time window that starts as soon as the Payment Pequest is generated, and ends EXPIRY_SECONDS later. For a payment to be received it must be broadcast to the blockchain within that window. It does not have to be confirmed within that window. If the payment is broadcast after EXPIRY_SECONDS, bitcoinPay will not track the payment. This window adds a degree of protection when the FIAT/BTC exchange rate is rapidly changing.
