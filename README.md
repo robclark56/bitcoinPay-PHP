@@ -148,17 +148,15 @@ U4UZulZEer8ss8l62QIDAQAB
 ### 2. Create SQL Database ###
 You will need to create a mySQL database. Consult your host server documentation.
 
-__Note:__ Give the database user ALL PRIVILEGES.
-
 For example, if you have access to cPanel, [these instructions](https://support.hostgator.com/articles/cpanel/how-do-i-create-a-mysql-database-a-user-and-then-delete-if-needed) can help.
 
 After you have created your database you should have this information:
 
 |-- Parameter --|------------------ Value ----------------|--- Comment ---|
 |---------|-----|-------|
-|User|||
+|User||Give _ALL PRIVILEGES_|
 |Password||||
-|Host||Often is 'localhost'|
+|Host||Often is _localhost_|
 |Database name|||
 
 
