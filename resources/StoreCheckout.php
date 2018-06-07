@@ -15,8 +15,8 @@
 //3-character ISO code. See: https://en.wikipedia.org/wiki/ISO_4217
 define('CURRENCY','USD');			
 
-//e.g. 'https://my.domain/bitcoinPay/'.basename(__FILE__)
-define('CALLBACK_URL','https://my.estore.com/bitcoinPay/'.basename(__FILE__));
+//e.g. 'https://my.domain/bitcoinPay/StoreCallback.php'
+define('CALLBACK_URL','https://my.estore.com/bitcoinPay/StoreCallback.php');
 // --- END  CHANGE_ME -------------------------------------------
 
 
