@@ -1,8 +1,8 @@
-#widgetPay > a {
+#bitcoinPay > a {
     font-weight: 600 !important;
 }
 
-#widgetPay {
+#bitcoinPay {
     background-color: #FFFFFF !important;
 
     border: 2px #BDBDBD solid !important;
@@ -11,28 +11,28 @@
 
 }
 
-.widgetPayInput {
+.bitcoinPayInput {
     border: 1px #BDBDBD solid !important;
 
     background-color: #FFFFFF !important;
 }
 
-.widgetPayButton {
+.bitcoinPayButton {
     color: #FFFFFF !important;
 
     background-color: #FFB300 !important;
 }
 
-#widgetPayError {
+#bitcoinPayError {
     color: #D50000 !important;
 
     font-weight: 600 !important;
 }
 
-#widgetPayCopy {
+#bitcoinPayCopy {
     border-right: 1px solid #FFFFFF !important;
 }
 
-#widgetPayExpiry {
+#bitcoinPayExpiry {
     font-weight: 600 !important;
 }
