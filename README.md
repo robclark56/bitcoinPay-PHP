@@ -31,9 +31,15 @@ If want to tip me you can use my LightningTip as below.
 ## CREDIT ##
 bitcoinPay-PHP is based on [LightningTip-PHP](https://github.com/robclark56/lightningtip-PHP), which in turn is based on [LightningTip](https://github.com/michael1011/lightningtip/blob/master/README.md) by [michael1011](https://github.com/michael1011/lightningtip).
 ## REQUIREMENTS ##
-* a webserver that supports [PHP](http://www.php.net/), [mySQL](https://www.mysql.com/), and [cron jobs](https://en.wikipedia.org/wiki/Cron).
+A webserver that supports:
+
+* [PHP](http://www.php.net/), 
+* [mySQL](https://www.mysql.com/), and 
+* [cron jobs](https://en.wikipedia.org/wiki/Cron).
 ## SECURITY ## 
 At no point do you enter any of your bitcoin private keys. No hacker can spend your bitcoins. 
+
+You need to keep your webserver secure, as a hacker with sufficient privileges could exchange his/her xpub for yours and customers would start paying the hacker.
 ## ECOMMERCE EXAMPLE ##
 The intended audience for this project is users that have an existing online eCommerce site (eStore). Typically the customer ends up at a _checkout confirmation_ webpage with some _Pay Now_ button(s).
 
@@ -45,9 +51,9 @@ The basic flow is as follows:
 1. eStore displays a shopping cart page with a total payable (Fiat currency)
 1. User clicks _Pay Button_  => Redirected to PHP file which converts fiat value to BTC, and returns a confirmation page
 1. User clicks _Get Payment Request_ => Javascript passes values to PHP file which responds with a Payment Request
-1. PHP file continuously monitors blockchain for matching transctions
+1. The Javascript & PHP file continuously monitors the blockchain for matching transactions
 1. Customer makes payment with wallet
-1. If/When payment has sufficient confirmations => Secure message sent back to eStore with payment status ('Paid' or 'Underpaid') and details.
+1. If/When payment has sufficient confirmations => PHP file sends a secure message back to eStore with payment status ('Paid' or 'Underpaid') and details.
 1. eStore checks message validity, and then takes appropriate action for 2 possible cases: 'Paid' or 'Underpaid'
 
 ```                                    
@@ -108,10 +114,10 @@ This is done by a [cron job](https://en.wikipedia.org/wiki/Cron). The timing log
 * __EXPIRY_SECONDS__ defines a time window that starts as soon as the Payment Pequest is generated, and ends EXPIRY_SECONDS later. For a payment to be received it must be broadcast to the blockchain within that window. It does not have to be confirmed within that window. If the payment is broadcast after EXPIRY_SECONDS, bitcoinPay will not track the payment. This window adds a degree of protection when the FIAT/BTC exchange rate is rapidly changing.
 * __MINE_SECONDS__ defines a time interval that starts as soon as the Payment Request is generated, and ends MINE_SECONDS later. A non-expired payment that is mined (include in a block) within this window, and has sufficient confirmations is accepted as PAID. This window protects for the case when the sender does not include sufficient miner fee and inclusion in the blockchain takes too long, again risking invoice under-payment in fiat value. 
 
-The cron job runs periodically to check pending payments. `bitcoinPay.php`is designed to be that cron job, if:
+The cron job runs periodically to check pending payments. `bitcoinPay.php`can be used as the file for that cron job, if:
 
-* called as a URL with one GET parameter as follows `https://.../bitcoinPay.php?checksettled`, or
-* called from the command-line as follows:  ` php bitcoinPay.php checksettled`
+* called as a URL with one GET parameter as follows `https://my.estore.com/bitcoinPay/bitcoinPay.php?checksettled`, or
+* called from the command-line as follows:  `$ php bitcoinPay.php checksettled`
      
  The logic used is as follows:
      
@@ -197,6 +203,7 @@ or you can check my test sites here:
 
 
 ## LIVE USEAGE ##
+
 Copy the contents of the head tag from `bitcoinPay.php` into the head section of the HTML file you want to show bitcoinPay in. The div below the head tag is bitcoinPay itself. Paste it into any place in the already edited HTML file on your server.
 
 Edit __bitcoinPay_conf.php__ to set the default wallet to your mainnet wallet.
@@ -208,4 +215,12 @@ There is a light theme available for bitcoinPay. If you want to use it, uncommen
 ```
 
 **Do not use bitcoinPay on XHTML** sites. That causes some weird scaling issues.
+### Lock Down Security ###
+Example using the shell command line:
+```
+$ cd <bitcoinPay folder>
+$ chmod 0444 *
+$ cd ..
+$ chmod 0555 <bitcoinPay folder>
+```
 
