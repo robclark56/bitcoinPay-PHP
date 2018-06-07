@@ -1,22 +1,31 @@
 <?php
 /*
- LightningPay  - Example eCommerce checkout page
+ StoreCheckout.php  - Example eCommerce checkout page
+ 
+ See https://github.com/robclark56/bitcoinPay-PHP/edit/master/README.md
  
  Example URLs
   https://my.web.server/path/StoreCheckout.php
   https://my.web.server/path/StoreCheckout.php?order_id=100
-  https://my.web.server/path/StoreCheckout.php?testnet=1
-  https://my.web.server/path/StoreCheckout.php?testnet=1&order_id=100
+  https://my.web.server/path/StoreCheckout.php?wallet=MySegwit
+  https://my.web.server/path/StoreCheckout.php?wallet=MySegwit&order_id=100
 */
 
-define('CURRENCY','USD');
-$testnet = $_GET['testnet'] > 0;
-$chain_name = $testnet?'Testnet':'Mainnet';
+// --- START CHANGE_ME ------------------------------------------
+//3-character ISO code. See: https://en.wikipedia.org/wiki/ISO_4217
+define('CURRENCY','USD');			
+
+//e.g. 'https://my.domain/bitcoinPay/'.basename(__FILE__)
+define('CALLBACK_URL','https://my.domain/bitcoinPay/'.basename(__FILE__));
+// --- END  CHANGE_ME -------------------------------------------
+
+
+$wallet=$_GET['wallet'];
 $order_id=$_GET['order_id']?$_GET['order_id']:42;	//Default order = 42. Cheaper alternative = 100
 
 $orders[100]['products'][] = 
 		array(	
-			'qty' => 1,
+			'qty' => 50,
 			'price_ea' => 0.10,
 			'desc' =>'HODL Sticker'
 		);
@@ -46,20 +55,19 @@ $orders[42]['products'][] =
 <meta charset="UTF-8">
 <title>Store Checkout</title>
 <style> 
-body { background-color: <?php echo $testnet?'CornflowerBlue ':'SkyBlue';?>;} 
+body { background-color: CornflowerBlue;} 
 table{ background-color: white;} 
 </style>
 </head>
 
 <body>
 <table>
-<td><img src="https://github.com/lightningnetwork/lnd/raw/master/logo.png"  width="150" height="150">
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg"  width="150" height="150">
 <td><img src="https://image.freepik.com/free-icon/store_318-49896.jpg" width="150" height="150">
 </table>
-<h1>All Electric <?php echo $chain_name?> Emporium</h1>
+<h1>All Electric Bitcoin Emporium</h1>
 
 <h2>Your Shopping Cart - Order <?php echo $order_id?></h2>
-<?php //echo "<p><b>Current Exchange Rate:</b> 1 BTC = $ExchRate .</p>";?>
 <table border='1'>
  <tr><th>Qty<th>Description<th>Price each<th>Price Total<br><?php echo CURRENCY;?></tr>
  <?php
@@ -76,11 +84,12 @@ table{ background-color: white;}
  echo '<tr><th colspan="3" align="right">Total<th align="right">$ '.number_format($grand_total,2).'</tr>';
  echo '<tr><th colspan="4" align="right">'; 
  ?>
- <form action="lightningPay.php<?php echo $testnet?'?testnet=1':'';?>" method="post"> 
+ <form action="bitcoinPay.php<?php echo $wallet?"?wallet=$wallet":'';?>" method="post"> 
   <input type="hidden" name="memo" value="Order <?php echo $order_id;?>">  
   <input type="hidden" name="amount" value="<?php echo $grand_total;?>">
   <input type="hidden" name="currency" value="<?php echo CURRENCY;?>"> 
   <input type="hidden" name="amount_format" value="<?php echo '$'.number_format($grand_total,2);?>">
+  <input type="hidden" name="callback" value="<?php echo CALLBACK_URL;?>">
   <button type="submit">Pay Now</button><br>
  </form>
  <?php  echo '</tr>';?>
@@ -89,3 +98,4 @@ table{ background-color: white;}
 </body>
 
 </html>
+
