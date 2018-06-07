@@ -172,10 +172,12 @@ After you have created your database you should have this information:
   * __StoreCallback.php__: Edit the CHANGE_ME section.
   * __bitcoinPay.js__: Edit the CHANGE_ME section.
 * Create cron job to periodically check pending payments. Examples on how to run the cron job every 15 minutes are:
-  * cPanel or manual crontab entry:
+  * Servers with normal crontab-style cron jobs:
     * `*/15	*	*	*	*	/usr/bin/php /home/user/public_html/bitcoinPay/bitcoinPay.php checksettled`
-  * xxx:
-  * other: Consult your documentaion
+  * Servers only allowing URL-style cron jobs:
+    * Every 15 mins: `https://my.estore.com/bitcoinPay/bitcoinPay.php?checksettled`
+  * Other: 
+    * Consult your documentation
   
 ## TESTING ##
 Use your browser to visit these URLs:
