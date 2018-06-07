@@ -125,10 +125,10 @@ The cron job runs periodically to check pending payments. `bitcoinPay.php`is des
 
 ## PREPARATION ##
 ### 1. Generate Private/Public key pair ##
-To generate a Private/Public key pair, see  
+To generate a Private/Public key pair, use one of these options:  
 
-1. xxxxxx/generateKeys.php, or
-2. [http://travistidwell.com/jsencrypt/demo/](http://travistidwell.com/jsencrypt/demo/)  (save page and run offline for extra safety)
+1. Upload `generateKeys.php` to your host computer. Then run from the command line interface: `$ php generateKeys.php`
+1. [http://travistidwell.com/jsencrypt/demo/](http://travistidwell.com/jsencrypt/demo/)  (save page and run offline for extra safety)
 
 Save these keys locally for now. They will look something like this:
 ```
@@ -164,7 +164,7 @@ After you have created your database you should have this information:
   * e.g.: `.../public_html/bitcoinPay`
   * e.g.: `.../var/www/html/bitcoinPay`
 * Download the [latest release](https://github.com/robclark56/bitcoinPay-PHP/releases), and unzip.
-* Upload all files from the unzipped _resources_ folder to your webserver folder:
+* Upload all files from the unzipped _resources_ folder to your webserver folder. __Note__: Due to JavaScript security, bitcoinPay.php must be hosted at the same domain as bitcoinPay.js
 * Edit files.
   * __wallet_mainnet.php__: Enter your xpub value.
   * __wallet_testnet.php__: Enter your tpub value.
@@ -175,11 +175,11 @@ After you have created your database you should have this information:
 ## TESTING ##
 Use your browser to visit these URLs:
 
-* `https://your.web.server/path/StoreCheckout.php`
-* `https://your.web.server/path/StoreCheckout.php?order_id=100`
-* `https://your.web.server/path/StoreCheckout.php?wallet=wallet_testnet`
-* `https://your.web.server/path/StoreCheckout.php?wallet=wallet_mainnet`
-* `https://your.web.server/path/StoreCheckout.php?wallet=wallet_mainnet&order_id=100`
+* `https://my.estore.com/bitcoinPay/StoreCheckout.php`
+* `https://my.estore.com/bitcoinPay/StoreCheckout.php?order_id=100`
+* `https://my.estore.com/bitcoinPay/StoreCheckout.php?wallet=wallet_testnet`
+* `https://my.estore.com/bitcoinPay/StoreCheckout.php?wallet=wallet_mainnet`
+* `https://my.estore.com/bitcoinPay/StoreCheckout.php?wallet=wallet_mainnet&order_id=100`
 
 or you can check my test sites here:
 
