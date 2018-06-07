@@ -5,10 +5,10 @@
  See https://github.com/robclark56/bitcoinPay-PHP/edit/master/README.md
  
  Example URLs
-  https://my.web.server/path/StoreCheckout.php
-  https://my.web.server/path/StoreCheckout.php?order_id=100
-  https://my.web.server/path/StoreCheckout.php?wallet=MySegwit
-  https://my.web.server/path/StoreCheckout.php?wallet=MySegwit&order_id=100
+  https://my.estore.com/bitcoinPay/StoreCheckout.php
+  https://my.estore.com/bitcoinPay/StoreCheckout.php?order_id=100
+  https://my.estore.com/bitcoinPay/StoreCheckout.php?wallet=MySegwit
+  https://my.estore.com/bitcoinPay/StoreCheckout.php?wallet=MySegwit&order_id=100
 */
 
 // --- START CHANGE_ME ------------------------------------------
@@ -16,7 +16,7 @@
 define('CURRENCY','USD');			
 
 //e.g. 'https://my.domain/bitcoinPay/'.basename(__FILE__)
-define('CALLBACK_URL','https://my.domain/bitcoinPay/'.basename(__FILE__));
+define('CALLBACK_URL','https://my.estore.com/bitcoinPay/'.basename(__FILE__));
 // --- END  CHANGE_ME -------------------------------------------
 
 
