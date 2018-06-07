@@ -127,7 +127,7 @@ The cron job runs periodically to check pending payments. `bitcoinPay.php`is des
 ### 1. Generate Private/Public key pair ##
 To generate a Private/Public key pair, use one of these options:  
 
-1. Upload `generateKeys.php` to your host computer. Then run from the command line interface: `$ php generateKeys.php`
+1. Upload [generateKeys.php](https://github.com/robclark56/bitcoinPay-PHP/blob/master/utilities/generateKeys.php) to your host computer. Then run from the command line interface: `$ php generateKeys.php`
 1. [http://travistidwell.com/jsencrypt/demo/](http://travistidwell.com/jsencrypt/demo/)  (save page and run offline for extra safety)
 
 Save these keys locally for now. They will look something like this:
@@ -171,6 +171,11 @@ After you have created your database you should have this information:
   * __bitcoinPay_conf.php__: Edit  values as needed. Leave _WALLET_DEFAULT_ set to _wallet_testnet_.
   * __StoreCallback.php__: Edit the CHANGE_ME section.
   * __bitcoinPay.js__: Edit the CHANGE_ME section.
+* Create cron job to periodically check pending payments. Examples on how to run the cron job every 15 minutes are:
+  * cPanel or manual crontab entry:
+    * `*/15	*	*	*	*	/usr/bin/php /home/user/public_html/bitcoinPay/bitcoinPay.php checksettled`
+  * xxx:
+  * other: Consult your documentaion
   
 ## TESTING ##
 Use your browser to visit these URLs:
