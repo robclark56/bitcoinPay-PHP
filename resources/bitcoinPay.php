@@ -161,8 +161,8 @@ switch($_POST['Action']){
  	              $callback, $walletName
  	              );
  	}
-	//Comment out next 1 line if you do not want to receive GetInvoice messages
-	bitcoinPaySendEmail(EMAIL_TO, EMAIL_TO_NAME,'[bitcoinPay] GetInvoice',print_r($PR,1)."\n\nPREQ: ".$PR['payment_request']);
+	//Comment out next 1 line if you do not want to receive GetInvoice notifications
+	bitcoinPaySendEmail(EMAIL_TO, EMAIL_TO_NAME,'[bitcoinPay] GetInvoice',print_r($PR,1)."\n\nFile:".__FILE__);
  	
 	echo json_encode(array
 	 (
