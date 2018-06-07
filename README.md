@@ -51,7 +51,7 @@ The basic flow is as follows:
 1. eStore displays a shopping cart page with a total payable (Fiat currency)
 1. User clicks _Pay Button_  => Redirected to PHP file which converts fiat value to BTC, and returns a confirmation page
 1. User clicks _Get Payment Request_ => Javascript passes values to PHP file which responds with a Payment Request
-1. The Javascript & PHP file continuously monitors the blockchain for matching transactions
+1. The PHP file continuously monitors the blockchain for matching transactions
 1. Customer makes payment with wallet
 1. If/When payment has sufficient confirmations => PHP file sends a secure message back to eStore with payment status ('Paid' or 'Underpaid') and details.
 1. eStore checks message validity, and then takes appropriate action for 2 possible cases: 'Paid' or 'Underpaid'
