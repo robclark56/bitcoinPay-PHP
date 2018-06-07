@@ -204,6 +204,7 @@ Some webserver hosts do not permit use of the PHP mail() function for security r
 ## TESTING ##
 Use your browser to visit these URLs:
 
+* `https://my.estore.com/bitcoinPay/bitcoinPay.php?checksettled`
 * `https://my.estore.com/bitcoinPay/StoreCheckout.php`
 * `https://my.estore.com/bitcoinPay/StoreCheckout.php?order_id=100`
 * `https://my.estore.com/bitcoinPay/StoreCheckout.php?wallet=wallet_testnet`
