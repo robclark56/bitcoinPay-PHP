@@ -1,6 +1,16 @@
-///////// CHANGE ME ////////
-var requestUrl = window.location.protocol + "//" + window.location.hostname + "/path_to_widgetgpay/widgetPay.php";
+// bitcoinPay.js
+//  Javascript for bitcoinPay (see: https://github.com/robclark56/bitcoinPay-PHP)
+//
+
+///////// CHANGE ME ////////////
+// e.g. If bitcoinPay.php is available at   https://my.domain/bitcoinPay/bitcoinPay.php, 
+//      Then set UrlFilePath to: "/bitcoinPay/bitcoinPay.php"
+var UrlFilePath =  "/bitcoinPay/bitcoinPay.php";
 ///////// END CHANGE ME ////////
+
+
+var requestUrl = window.location.protocol + "//" + window.location.hostname + UrlFilePath;
+var bitcoinLogo = '&#x20bf;';
 
 // To prohibit multiple requests at the same time
 var running = false;
@@ -35,77 +45,86 @@ var qrCodeDataCapacities = [
 // TODO: solve this without JavaScript
 // Fixes weird bug which moved the button up one pixel when its content was changed
 window.onload = function () {
-    var button = document.getElementById("widgetPayGetInvoice");
+    var button = document.getElementById("bitcoinPayGetInvoice");
     button.style.height = (button.clientHeight + 1) + "px";
     button.style.width = (button.clientWidth + 1) + "px";
 };
 
-var testnet = getVal('testnet');  //see if GET param testnet is set  (URL?testnet=1)
-console.log('Testnet = ' + testnet); 
-if ( testnet !== null ) {
-	requestUrl = requestUrl + '?testnet=1';
+var wallet= getVal('wallet');  
+console.log('wallet = ' + wallet); 
+if ( wallet !== null ) {
+	requestUrl = requestUrl + '?wallet=' + wallet;
 	console.log('requestUrl = ' + requestUrl ); 
 }
 
 // TODO: show invoice even if JavaScript is disabled
 // TODO: fix scaling on phones
 // TODO: show price in dollar?
-function getInvoice() {
+function getPayReq() {
     if (running === false) {
         running = true;
 
-        var payValue = document.getElementById("widgetPayAmount");
+        var payValue = document.getElementById("bitcoinPayAmount");
+        
  
-        if (payValue.value !== "") {
-            if (!isNaN(payValue.value)) {
-                var request = new XMLHttpRequest();
+	if (payValue.value !== "") {
+		if (!isNaN(payValue.value)) {
+		var request = new XMLHttpRequest();
 
-                request.onreadystatechange = function () {
-                    if (request.readyState === 4) {
-			console.log("RESPONSE: " + request.responseText);
-                        try {
+		request.onreadystatechange = function () {
+			if (request.readyState === 4) {
+			 console.log("RESPONSE: " + request.responseText);
+                         try {
                             var json = JSON.parse(request.responseText);
-                            if (request.status === 200) {
+                            if (request.status === 200 && json.Error === null) {
                                 console.log("Got invoice: " + json.Invoice);
                                 console.log("Invoice expires in: " + json.Expiry);
                                 console.log("Starting listening for invoice to get settled");							
-                                listenInvoiceSettled(json.r_hash_str);
+                                listenInvoiceSettled(json.Address,json.BTC,json.Memo);
                                 invoice = json.Invoice;
 
                                 // Update UI
-                                var wrapper = document.getElementById("widgetPay");
-                                wrapper.innerHTML = "<a>Scan this payment request with your Lightning Wallet</a>";
-                                wrapper.innerHTML += "<input type='text' class='widgetPayInput' id='lightningPayInvoice' onclick='copyInvoiceToClipboard()' value='" + invoice + "' readonly>";
-                                wrapper.innerHTML += "<div id='lightningPayQR'></div>";
-                                wrapper.innerHTML += "<div id='lightningPayTools'>" +
-                                    "<button class='widgetPayButton' id='widgetPayPayCopy' onclick='copyInvoiceToClipboard()'>Copy</button>" +
-                                    "<button class='widgetPayButton' id='widgetPayPayOpen'>Open</button>" +
-                                    "<a id='lightningPayExpiry'></a>" +
+                                var wrapper = document.getElementById("bitcoinPay");
+                                wrapper.innerHTML = "<a>Please make this Bitcoin Payment</a>";
+                                wrapper.innerHTML += "<input type='text' class='bitcoinPayInput' id='bitcoinPayInvoice' onclick='copyInvoiceToClipboard()' value='" + invoice + "' readonly>";
+                                wrapper.innerHTML += "<div id='bitcoinPayQR'></div>";
+                                wrapper.innerHTML += "<div id='bitcoinPayTools'>" +
+                                    "<button class='bitcoinPayButton' id='bitcoinPayCopy' onclick='copyInvoiceToClipboard()'>Copy</button>" +
+                                    "<button class='bitcoinPayButton' id='bitcoinPayOpen'>Open</button>" +
+                                    "<a id='bitcoinPayExpiry'></a>" +
                                     "</div>";
-                                starTimer(json.Expiry, document.getElementById("widgetPayExpiry"));
+                                starTimer(json.Expiry, document.getElementById("bitcoinPayExpiry"));
 
-                                // Fixes bug which caused the content of #widgetPayTools to be visually outside of #widgetPay
-                                document.getElementById("widgetPayTools").style.height = document.getElementById("widgetPayCopy").clientHeight + "px";
-                                document.getElementById("widgetPayOpen").onclick = function () {
-                                    location.href = "lightning:" + json.Invoice;
+                                // Fixes bug which caused the content of #bitcoinPayTools to be visually outside of #bitcoinPay
+                                document.getElementById("bitcoinPayTools").style.height = document.getElementById("bitcoinPayCopy").clientHeight + "px";
+                                document.getElementById("bitcoinPayOpen").onclick = function () {
+                                    location.href = json.Invoice;
                                 };
                                 showQRCode();
                                 running = false;
                             } else {
                                 showErrorMessage(json.Error);
                             }
-                        } catch (exception) {
+                         } catch (exception) {
                             console.error(exception);
                             showErrorMessage("Failed to reach backend");
                         }
                     }
                 };
+                console.log('RequestURL = ' + requestUrl );
                 request.open("POST", requestUrl , true);
 		request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                var params = "Action=getinvoice&Amount=" + parseInt(payValue.value) + "&Message=" + encodeURIComponent(document.getElementById("widgetPayMessage").value);
-		            console.log(params);
-		            request.send(params);				
-                var button = document.getElementById("widgetPayPayGetInvoice");
+		var memo = document.getElementById("bitcoinPayMessage").value;
+		var currency = document.getElementById("bitcoinPayCurrency").value;
+		var currencyAmount = document.getElementById("bitcoinPayCurrencyAmount").value;
+		var callback = document.getElementById("bitcoinPayCallback").value;		
+                var params = "Action=getinvoice&amount=" + parseInt(payValue.value) + "&message=" + encodeURIComponent(memo);
+                params += '&currencyAmount=' + parseFloat(currencyAmount);
+                params += '&currency=' + encodeURIComponent(currency);
+                params += '&callback=' + encodeURIComponent(callback);
+		console.log(params);
+		request.send(params);				
+                var button = document.getElementById("bitcoinPayGetInvoice");
                 defaultGetInvoice = button.innerHTML;
                 button.innerHTML = "<div class='spinner'></div>";
             } else {
@@ -120,45 +139,46 @@ function getInvoice() {
     }
 }
 
-function listenInvoiceSettled(r_hash_str) {
-        var interval = setInterval(function () {
-            var request = new XMLHttpRequest();
+function listenInvoiceSettled(address,BTC,memo) {
+	var interval = setInterval(function () {
+	var request = new XMLHttpRequest();
 		
-	    //Prevent multiple calls for same invoice settled over slow networks.
-	    var IsSettled = false;
-            if ( IsSettled == true) {
-              return;
-            }
-
-            request.onreadystatechange = function () {
-                if (request.readyState === 4 && request.status === 200) {
-		   //console.log("RESPONSE: " + request.responseText);
-                    var json = JSON.parse(request.responseText);
-
-                    if (json.settled) {
-                        console.log("Invoice settled");
+	//Prevent multiple calls for same invoice settled over slow networks.
+	var IsSettled = false;
+	if ( IsSettled == true) {
+	 return;
+	}
+	console.log('listenInvoiceSettled BTC:' + BTC + ' Address:' + address  + 'Memo:' + memo);
+	request.onreadystatechange = function () {
+		if (request.readyState === 4 && request.status === 200) {
+		  console.log("RESPONSE: " + request.responseText);
+		  var json = JSON.parse(request.responseText);
+		  console.log('settled = ' + json.settled);
+		  if (json.settled) {
+			console.log("Invoice settled with " + json.confirmations + " confirmations");
 			IsSettled = true;
-                        clearInterval(interval);
-                        showThankYouScreen();
-                    }
-                }
-            };
+			clearInterval(interval);
+			showThankYouScreen();
+		  }
+		}
+	};
             	
-		request.open("POST", requestUrl, true);
-		request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            	var params = "Action=invoicesettled&r_hash_str=" + r_hash_str;
-		request.send(params);
+	request.open("POST", requestUrl , true);
+	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	var params = "Action=checksettled&btc=" + BTC + "&address=" + encodeURIComponent(address) + "&memo=" + encodeURIComponent(memo)  ;
+	//console.log('PARAMS:' + params);
+	request.send(params);
 
-        }, 2000);
-
-   // }
+        }, 10000);
 
 }
 
 function showThankYouScreen() {
-    var wrapper = document.getElementById("lightningPay");
-    wrapper.innerHTML = "<p id=\"widgetPayLogo\">⚡</p>";
-    wrapper.innerHTML += "<a id='widgetPayFinished'>Thank you for your Payment!</a>";
+    var wrapper = document.getElementById("bitcoinPay");
+    wrapper.innerHTML  = '<p id="bitcoinPayLogo">' + bitcoinLogo + '</p>';
+    wrapper.innerHTML += '<a id="bitcoinPayFinished">Payment Notification Received</a>';
+    wrapper.innerHTML += '<p>Thank you!</p>';
+    wrapper.innerHTML += '<p>You can close this window as we wait for the Payment Confirmations.<p>';
 }
 
 function starTimer(duration, element) {
@@ -195,10 +215,9 @@ function showTimer(duration, element) {
 }
 
 function showExpired() {
-    var wrapper = document.getElementById("widgetPay");
-
-    wrapper.innerHTML = "<p id=\"widgetPayLogo\">⚡</p>";
-    wrapper.innerHTML += "<a id='widgetPayFinished'>Your payment request expired!</a>";
+    var wrapper = document.getElementById("bitcoinPay");
+    wrapper.innerHTML  = '<p id="bitcoinPayLogo">' + bitcoinLogo + '</p>';
+    wrapper.innerHTML += '<a id="bitcoinPayFinished">Your payment request expired!</a>';
 }
 
 function addLeadingZeros(value) {
@@ -206,12 +225,12 @@ function addLeadingZeros(value) {
 }
 
 function showQRCode() {
-    var element = document.getElementById("widgetPayQR");
+    var element = document.getElementById("bitcoinPayQR");
 
     createQRCode();
 
     element.innerHTML = qrCode;
-    var size = document.getElementById("widgetPayInvoice").clientWidth + "px";
+    var size = document.getElementById("bitcoinPayInvoice").clientWidth + "px";
     var qrElement = element.children[0];
     qrElement.style.height = size;
     qrElement.style.width = size;
@@ -242,7 +261,7 @@ function createQRCode() {
 }
 
 function copyInvoiceToClipboard() {
-    var element = document.getElementById("widgetPayInvoice");
+    var element = document.getElementById("bitcoinPayInvoice");
 
     element.select();
     document.execCommand('copy');
@@ -252,10 +271,10 @@ function copyInvoiceToClipboard() {
 function showErrorMessage(message) {
     running = false;
     console.error(message);
-    var error = document.getElementById("widgetPayError");
+    var error = document.getElementById("bitcoinPayError");
     error.parentElement.style.marginTop = "0.5em";
     error.innerHTML = message;
-    var button = document.getElementById("widgetPayGetInvoice");
+    var button = document.getElementById("bitcoinPayGetInvoice");
 
     // Only necessary if it has a child (div with class spinner)
     if (button.children.length !== 0) {
