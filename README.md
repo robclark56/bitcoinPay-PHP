@@ -198,7 +198,7 @@ or you can check my test sites here:
 
 (_https_ not used as this is hosted on a free web server without SSL certificates. You will not be entering any sensitive data.)
 
-* [Order for USD 80.00 (mainnet)](http://raspibolt.epizy.com/bitcoinPay/StoreCheckout.php) CAREFULL: Don't send me real BTC.
+* [Order for USD 80.00 (mainnet)](http://raspibolt.epizy.com/bitcoinPay/StoreCheckout.php?wallet=wallet_mainnet) CAREFULL: Don't send me real BTC.
 * [Order for USD 5.00 (testnet)](http://raspibolt.epizy.com/bitcoinPay/StoreCheckout.php?wallet=wallet_testnet&order_id=100)
 
 
