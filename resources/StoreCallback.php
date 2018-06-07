@@ -87,8 +87,8 @@ function bitcoinPaySendEmail($to,$to_name,$subject,$body){
   if(true){ //false = use PHPMailer
 	mail("$to_name <$to>",$subject,$body,"From: ".EMAIL_FROM_NAME." <".EMAIL_FROM.">");  
   } else {
-	date_default_timezone_set('Australia/Perth');
-	require '../PHPMailer/PHPMailerAutoload.php';
+	date_default_timezone_set('CHANGE_ME'); 	//eg 'Australia/Perth'
+	require '../PHPMailer/PHPMailerAutoload.php';	//CHANGE_ME if needed
 	$mail = new PHPMailer;
 	$mail->isSMTP();
 	$mail->Host       = 'CHANGE_ME'; // Which SMTP server to use.
