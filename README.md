@@ -179,7 +179,7 @@ After you have created your database you should have this information:
   * __bitcoinPay_conf.php__: Edit  values as needed. Leave _WALLET_DEFAULT_ set to _wallet_testnet_.
   * __StoreCheckout.php__: Edit the CHANGE_ME section.
   * __StoreCallback.php__: Edit the CHANGE_ME section.
-     * See note below on Email Special Consideration
+     * See note below on [Email Special Consideration](https://github.com/robclark56/bitcoinPay-PHP/blob/master/README.md#email-special-consideration)
   * __bitcoinPay.js__: Edit the CHANGE_ME section.
 * Create cron job to periodically check pending payments. Examples on how to run the cron job every 15 minutes are:
   * Servers with normal crontab-style cron jobs:
