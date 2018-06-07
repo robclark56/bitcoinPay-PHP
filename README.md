@@ -169,13 +169,17 @@ After you have created your database you should have this information:
 * Create a folder on your webserver to host the bitcoinPay files. Consult your webserver documentation for details on where html files are stored.
   * e.g.: `.../public_html/bitcoinPay`
   * e.g.: `.../var/www/html/bitcoinPay`
+  * e.g.: `.../htdocs/bitcoinPay`
+  
 * Download the [latest release](https://github.com/robclark56/bitcoinPay-PHP/releases), and unzip.
 * Upload all files from the unzipped _resources_ folder to your webserver folder. __Note__: Due to JavaScript security, bitcoinPay.php must be hosted at the same domain as bitcoinPay.js
 * Edit files.
   * __wallet_mainnet.php__: Enter your xpub value.
   * __wallet_testnet.php__: Enter your tpub value.
   * __bitcoinPay_conf.php__: Edit  values as needed. Leave _WALLET_DEFAULT_ set to _wallet_testnet_.
+  * __StoreCheckout.php__: Edit the CHANGE_ME section.
   * __StoreCallback.php__: Edit the CHANGE_ME section.
+     * See note below on Email Special Consideration
   * __bitcoinPay.js__: Edit the CHANGE_ME section.
 * Create cron job to periodically check pending payments. Examples on how to run the cron job every 15 minutes are:
   * Servers with normal crontab-style cron jobs:
@@ -184,6 +188,18 @@ After you have created your database you should have this information:
     * Every 15 mins: `https://my.estore.com/bitcoinPay/bitcoinPay.php?checksettled`
   * Other: 
     * Consult your documentation
+    
+### Email Special Consideration  ###
+Some webserver hosts do not permit use of the PHP mail() function for security reasons. If you are in this category, there is a workaround available in bitcoinPay.
+
+* You will need to edit the _bitcoinPaySendEmail()_ function in these 2 files:
+  * StoreCallback.php
+  * bitcoinPay.php
+* Read the comments in the _bitcoinPaySendEmail()_ function in either of these files
+* Install PHPMailer in a folder called `PHPMailer`
+* Edit the _bitcoinPaySendEmail()_ function in the 2 files as below
+  * Change ` if(false){ //false = use PHPMailer`
+  * Change all lines with CHANGE_ME
   
 ## TESTING ##
 Use your browser to visit these URLs:
