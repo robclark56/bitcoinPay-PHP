@@ -1,4 +1,4 @@
-#widgetPay {
+#bitcoinPay {
     width: 12em;
     padding: 1em;
     background-color: #212121;
@@ -10,7 +10,7 @@
     text-align: center;
 }
 
-.widgetPayInput {
+.bitcoinPayInput {
 //    width: 100%;
     display: inline-block;
     padding: 6px 10px;
@@ -25,7 +25,7 @@
     overflow-y: hidden;
 }
 
-.widgetPayButton {
+.bitcoinPayButton {
     padding: 0.4em 1em;
     font-size: 17px;
     color: #212121;
@@ -36,26 +36,26 @@
     cursor: pointer;
 }
 
-.widgetPayButton:focus {
+.bitcoinPayButton:focus {
     outline: none;
 }
 
-.widgetPayButton::-moz-focus-inner {
+.bitcoinPayButton::-moz-focus-inner {
     outline: none;
     border: 0;
 }
 
-#widgetPayLogo {
+#bitcoinPayLogo {
     margin-top: 0;
     margin-bottom: 0.6em;
     font-size: 25px;
 }
 
-#widgetPayInputs {
+#bitcoinPayInputs {
     margin-top: 0.8em;
 }
 
-#widgetPayMessage {
+#bitcoinPayMessage {
     min-height: 55px;
     margin-top: 0.5em;
     padding: 8px 10px;
@@ -66,52 +66,52 @@
 }
 
 /* Hack for using placeholders on divs */
-#widgetPayMessage:empty:before {
+#bitcoinPayMessage:empty:before {
     content: attr(placeholder);
     color: gray;
 }
 
-#widgetPayGetInvoice {
+#bitcoinPayGetInvoice {
     margin-top: 1em;
 }
 
-#widgetPayError {
+#bitcoinPayError {
     font-size: 17px;
     color: #F44336;
 }
 
-#widgetPayInvoice {
+#bitcoinPayInvoice {
     margin-top: 1em;
     margin-bottom: 0.5em;
 }
 
-#widgetPayQR {
+#bitcoinPayQR {
     margin-bottom: 0.8em;
 }
 
-#widgetPayTools {
+#bitcoinPayTools {
     height: 100px;
 }
 
-#widgetPayCopy {
+#bitcoinPayCopy {
     border-right: 1px solid #F5F5F5;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     float: left;
 }
 
-#widgetPayOpen {
+#bitcoinPayOpen {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     float: left;
 }
 
-#widgetPayExpiry {
+#bitcoinPayExpiry {
     padding: 0.3em 0;
     float: right;
 }
 
-#widgetPayFinished {
+#bitcoinPayFinished {
     margin-bottom: 0.2em;
     display: block;
 }
@@ -135,6 +135,6 @@
     }
 }
 
-#widgetPay.testnet {
+#bitcoinPay.testnet {
     background-color: #27b09d;
 }
