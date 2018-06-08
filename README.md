@@ -202,9 +202,10 @@ Some webserver hosts do not permit use of the PHP mail() function for security r
   * Change all lines with CHANGE_ME
   
 ## TESTING ##
-Use your browser to visit these URLs:
+Use your browser to visit your URLs like this:
 
 * `https://my.estore.com/bitcoinPay/bitcoinPay.php?checksettled`
+  * Note: This displays nothing if there are no pending payments, so _blank screen_ is a good response. The only point in trying this is to confirm there are no PHP configuration or syntax errors.
 * `https://my.estore.com/bitcoinPay/StoreCheckout.php`
 * `https://my.estore.com/bitcoinPay/StoreCheckout.php?order_id=100`
 * `https://my.estore.com/bitcoinPay/StoreCheckout.php?wallet=wallet_testnet`
