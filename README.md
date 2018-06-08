@@ -206,6 +206,8 @@ Use your browser to visit your URLs like this:
 
 * `https://my.estore.com/bitcoinPay/bitcoinPay.php?checksettled`
   * Note: This displays nothing if there are no pending payments, so _blank screen_ is a good response. The only point in trying this is to confirm there are no PHP configuration or syntax errors.
+* `https://my.estore.com/bitcoinPay/StoreCallback.php`
+  * You should receive an email with this is the body: "Hacking Attempt???". This is the expected response when this file is called with the wrong POST parameters.
 * `https://my.estore.com/bitcoinPay/StoreCheckout.php`
 * `https://my.estore.com/bitcoinPay/StoreCheckout.php?order_id=100`
 * `https://my.estore.com/bitcoinPay/StoreCheckout.php?wallet=wallet_testnet`
