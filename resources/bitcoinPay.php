@@ -42,7 +42,6 @@ SYNTAX MODE 1 (Interactive):
 		POST Parameters: 
 		        Action        = getinvoice
 			amount        = BTC amount in satoshis (e.g. 1003003)
-			amount_format = as above but formated for display (e.g. ' $80.00')   ??????????????????
 			memo          = memo text (e.g. 'Order 42')
 			currency      = 3 character currency from https://en.wikipedia.org/wiki/ISO_4217#Active_codes (e.g. 'USD', 'EUR', etc)
 			currencyAmount= the invoice value in fiat (eg. 80.00 for $80.00) 
@@ -66,6 +65,7 @@ SYNTAX MODE 1 (Interactive):
 			Action        = checksettled
 			address       = A Bitcoin address
 			btc           = Amount in BTC
+			memo          = memo text (e.g. 'Order 42')
 			
 		Returns JSON encoding of these values:	
 		  	settled       = true (if the payment is complete), else false 
@@ -142,32 +142,14 @@ if(  ($argv[1] == CHECK_SETTLED)  	//called with command line argument (e.g. cro
  $memo           =$_POST['memo'];
  $callback       =$_POST['callback'];
 
- if($currency){
-  $ExchRate = getExchRate($currency);
- if(empty($ExchRate)){
-  ?>
-  <!DOCTYPE html>
-  <html>
-  <head><meta charset="utf-8"><title>bitcoin Pay Error</title></head>
-  <body><h2>Error</h2>Unable to get Exchange Rate</body>
-  </html>
-  <?php
-   exit;
-  } else {
-   $BTC = number_format($_POST['amount'] / $ExchRate,8);
-   $satoshi = $BTC * 100000000;
-  }
- }
-
  $walletName = $_GET['wallet']?$_GET['wallet']:DEFAULT_WALLET;
  include "$walletName.php";
  $Wallet = new Wallet;
 }
 
 switch($_POST['Action']){
-
+ //MODE 1, CASE 2
  case 'getinvoice':
- mail('clark@ubwh.com.au',__FILE__,"POST:".print_r($_POST,1));
  	$PR = $Wallet->getPaymentRequest($_POST['message'],$_POST['amount']);
  	if(empty($PR['error'])){
    	  $DB = new bpDatabase;
@@ -192,6 +174,8 @@ switch($_POST['Action']){
 	);
        exit;
 
+  //MODE 1, CASE 3 ($address & $btc set)
+  //MODE 2         ($address & $btc not set)
   case CHECK_SETTLED:
      $CS = checkSettled($Wallet,$address,$btc);
      //If txid exists then payment has been broadcast to blockchain
@@ -201,14 +185,14 @@ switch($_POST['Action']){
      }
      if($CS['error']){
       echo json_encode($CS);
-      exit;
-     } 
-     echo json_encode(array 
+     } else {
+      echo json_encode(array 
        (
        'settled'      =>!empty($CS['txid']),
        'confirmations'=>$CS['confirmations']
        )
-     );
+      );
+     }
      exit;
  
   default:
@@ -216,7 +200,31 @@ switch($_POST['Action']){
 
    // fall through to displaying the HTML
 }
+
+//MODE 1, CASE 1
 $testnet = $Wallet->isTestnet();
+if($currency){
+ $ExchRate = getExchRate($currency);
+ if(empty($ExchRate)){
+   $CurrencyError = "Unable to get Exchange Rate for $currency";	
+ } else {
+   $BTC = number_format($_POST['amount'] / $ExchRate,8);
+   $satoshi = $BTC * 100000000;
+ }
+} else {
+ $CurrencyError = "Currency not set";	
+}
+
+if($CurrencyError){
+?>
+  <!DOCTYPE html>
+  <html>
+  <head><meta charset="utf-8"><title>bitcoin Pay Error</title></head>
+  <body><h2>Error</h2><?php echo $CurrencyError;?></body>
+  </html>	
+<?php
+  exit;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -248,13 +256,12 @@ $testnet = $Wallet->isTestnet();
 </body>
 </html>
 
-
 <?php
-
+/////////  FUNCTIONS  ///////////////////
 function checkSettled($Wallet, $address,$btc){
   //Query blockchain to see if payment(s) have been made
-  
   if($address && $btc){
+    //MODE 1, CASE 3
     //Query for 1 payment
     $CP = $Wallet->checkPayment($address,$btc); 
     if($CP && !$CP['success']){
@@ -287,6 +294,7 @@ function checkSettled($Wallet, $address,$btc){
      }
     } 
   } else {
+    //MODE 2
     //Query all unpaid payments
     //Typically only called as a cron job; never from the javascript.
     // Phase 1: Look for new payments that have been broadcast within EXPIRY_SECONDS window 
