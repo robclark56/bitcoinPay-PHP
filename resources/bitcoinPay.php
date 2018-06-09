@@ -337,8 +337,7 @@ if($NewTransactions)echo "NewTransactions:".print_r($NewTransactions,1)."\n\n";
    $PendingTransactions = $DB->getPendingTransactions();
  if($PendingTransactions)  echo "\nPendingTransactions = ".print_r($PendingTransactions,1);
    if(empty($PendingTransactions))  exit;
-   
-   echo "PTs".print_r($PendingTransactions,1)."\n\n";
+
    foreach($PendingTransactions as $PT){
      //It is possible that each transaction is for a different wallet.
      if(isset($Wallet)) unset($Wallet);
@@ -396,7 +395,7 @@ if($NewTransactions)echo "NewTransactions:".print_r($NewTransactions,1)."\n\n";
 
 function CallBack($URL, $data){
  //Used to callback to the originating eCommerce store
-echo "\nCallBack($URL,$json\n\n";
+ echo "\nCallBack($URL,$json\n\n";
  if(empty($URL)) return;
 
   $opts = array('http' =>
@@ -497,7 +496,6 @@ class bpDatabase {
     $sql  = "INSERT into $this->db_table (wallet_name,address,payment_request,memo,currency,amount,BTC,expiry_seconds,mine_seconds,minConfirmations,callback) ";
     $sql .= "VALUES ('$walletName','$address','$payment_request','$message','$currency','$amount','$BTC','$expiry_seconds','$mine_seconds','$minConfirmations','$callback')";	
     mysqli_query($this->mysqli,$sql);
-  mail('clark@ubwh.com.au',__FILE__,"SQL $sql");
  }
  
  public function settledPR($address, $btc, $memo, $confirmations){
