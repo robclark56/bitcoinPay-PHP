@@ -1,11 +1,11 @@
 <?php
 /*
-	
 bitcoinPay.php
 	See https://github.com/robclark56/bitcoinPay-PHP
 
 FUNCTIONS
-If called with 
+This file performs a number of different fuctions, depending on how it is called.
+
 	* [Mode 2] 
 		Checks blockchain to see if unpaid payment request(s) have been paid (settled)
 	* no POST parameters: 
@@ -17,7 +17,23 @@ If called with
 SYNTAX MODE 1 (Interactive): 
 	This is typically called in this mode from an eStore checkout page.
         
-        CASE 1: getInvoice
+	CASE 1: Display 'Get Payment Request' page
+		https://my.estore.com/bitcoinPay/bitcoinPay.php[?wallet=WalletName]
+        	
+		GET Parameters:
+			wallet        = [Optional] a wallet name (e.g. if wallet=MyWallet, then MyWallet.php must exist)
+			                Default: The wallet name is taken from bitcoinPay_conf.php
+		POST Parameters: 
+			amount        = BTC amount in fiat currency (e.g. 80.0)
+			amount_format = as above but formated for display (e.g. '$80.00')
+			memo          = memo text (e.g. 'Order 42')
+			currency      = 3 character currency from https://en.wikipedia.org/wiki/ISO_4217#Active_codes (e.g. 'USD', 'EUR', etc)
+			callback      = a URL to callback with payment result (e.g. https://your.domain/StoreCallback.php)
+ 
+		Returns 
+			HTML webpage with BTC value and a [Get Payment Request] button	
+	
+        CASE 2: getInvoice
         	https://my.estore.com/bitcoinPay/bitcoinPay.php[?wallet=WalletName]
         	
 		GET Parameters:
@@ -26,7 +42,7 @@ SYNTAX MODE 1 (Interactive):
 		POST Parameters: 
 		        Action        = getinvoice
 			amount        = BTC amount in satoshis (e.g. 1003003)
-			amount_format = as above but formated for display (e.g. ' $80.00')
+			amount_format = as above but formated for display (e.g. ' $80.00')   ??????????????????
 			memo          = memo text (e.g. 'Order 42')
 			currency      = 3 character currency from https://en.wikipedia.org/wiki/ISO_4217#Active_codes (e.g. 'USD', 'EUR', etc)
 			currencyAmount= the invoice value in fiat (eg. 80.00 for $80.00) 
@@ -40,7 +56,7 @@ SYNTAX MODE 1 (Interactive):
 	                Memo          = the POST memo text
 	                Expiry        = Seconds until this Payment Request expires
 	                
-	CASE 2: checkSettled
+	CASE 3: checkSettled
 		https://my.estore.com/bitcoinPay/bitcoinPay.php?[?&wallet=WalletName]	
 
 		GET Parameters
