@@ -6,12 +6,10 @@ bitcoinPay.php
 FUNCTIONS
 This file performs a number of different fuctions, depending on how it is called.
 
-	* [Mode 2] 
-		Checks blockchain to see if unpaid payment request(s) have been paid (settled)
-	* no POST parameters: 
-		Exits quietly (not used)
-	* [Mode 1] otherwise
+	* [Mode 1] Interactive
 		Performs backend functions and passes results back to bitcoinPay.js
+	* [Mode 2] Cron job
+		Checks blockchain to see if unpaid payment request(s) have been paid (settled)
 
    
 SYNTAX MODE 1 (Interactive): 
@@ -24,7 +22,7 @@ SYNTAX MODE 1 (Interactive):
 			wallet        = [Optional] a wallet name (e.g. if wallet=MyWallet, then MyWallet.php must exist)
 			                Default: The wallet name is taken from bitcoinPay_conf.php
 		POST Parameters: 
-			amount        = BTC amount in fiat currency (e.g. 80.0)
+			amount        = the invoice value in fiat (eg. 80.00 for $80.00) 
 			amount_format = as above but formated for display (e.g. '$80.00')
 			memo          = memo text (e.g. 'Order 42')
 			currency      = 3 character currency from https://en.wikipedia.org/wiki/ISO_4217#Active_codes (e.g. 'USD', 'EUR', etc)
@@ -73,7 +71,7 @@ SYNTAX MODE 1 (Interactive):
 			
 			
 SYNTAX MODE 2 (Cron):		
-		URL: https://my.estore.com/bitcoinPay/bitcoinPay.php?checksettled
+		URL: http[s]://my.estore.com/bitcoinPay/bitcoinPay.php?checksettled
 		or
 		CLI: $ php bitcoinPay.php checksettled
 
@@ -81,6 +79,7 @@ SYNTAX MODE 2 (Cron):
 		with these POST parameters:
 		       	 
    		[status] => 'Paid' or 'underPaid'
+		[isTestnet] => true or false
     		[data] => Array(
            		[id] => internal database id. Can be ignored.
             		[wallet_name] => e.g. wallet_testnet
@@ -104,20 +103,10 @@ SYNTAX MODE 2 (Cron):
     			To check these data are from the correct source: 
     				([data][address]) must equal ([hash], decrypted with the Public Key).
     		[fiatValue] => Array  (
-            		[original] => The original invoice vali in fiat. e.g. 80
+            		[original] => The original invoice value in fiat. e.g. 80
             		[now] => The value of the BTC when this callback was sent. 79.8221771016
         	   	)
 
-Instructions:
- 
-1. Install these files on your webserver. 
-	Note: Due to JavaScript security, bitcoinPay.php must be hosted at the same domain as bitcoinPay.js
-	
-	
-2. Update the bitcoinPay_conf.php file.
-		
-3. Open with browser: 
-	https://your.domain/path/StoreCheckout.php
 */
 
 include "bitcoinPay_conf.php";
@@ -343,7 +332,7 @@ if($NewTransactions)echo "NewTransactions:".print_r($NewTransactions,1)."\n\n";
      if(isset($Wallet)) unset($Wallet);
      include_once $PT['wallet_name'].'.php';
      $Wallet = new Wallet;
-     /*    
+     /*  eg $PT
      [id] => 54
      [address] => mgjQFqyrWNihreGHo4331KgEgHzAyEASgW
      [BTC] => 0.01060340
@@ -355,7 +344,7 @@ if($NewTransactions)echo "NewTransactions:".print_r($NewTransactions,1)."\n\n";
      [gmt_mine_limit] => 2018-06-01 07:49:37
      */
      $CS = checkSettled($Wallet, $PT['address'],$PT['BTC']);
-     /* 
+     /* eg $CS
      [address] => mgjQFqyrWNihreGHo4331KgEgHzAyEASgW
      [BTC] => 0.01060340
      [confirmations] => 893
@@ -381,6 +370,7 @@ if($NewTransactions)echo "NewTransactions:".print_r($NewTransactions,1)."\n\n";
        openssl_private_encrypt($PT[address], $encrypted_address, ESTORE_PRIV_KEY);
        CallBack($PT['callback'],
        		array('status' => $statusText,
+		      'isTestnet' => $Wallet->isTestnet(), 
        		      'data'   => array_merge($PT,$CS),
        		      'hash'   => bin2hex($encrypted_address),
        		      'fiatValue'  => array('original'=>$OriginalFiatValue,'now'=>$CurrentFiatValue)
