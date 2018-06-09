@@ -128,7 +128,6 @@ if(  ($argv[1] == CHECK_SETTLED)  	//called with command line argument (e.g. cro
  $currencyAmount =$_POST['currencyAmount'];
  $address        =$_POST['address'];
  $btc            =$_POST['btc'];
- $memo           =$_POST['memo'];
  $callback       =$_POST['callback'];
 
  $walletName = $_GET['wallet']?$_GET['wallet']:DEFAULT_WALLET;
