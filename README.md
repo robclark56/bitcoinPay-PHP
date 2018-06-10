@@ -224,23 +224,62 @@ or you can check my test sites here:
 
 ## LIVE USEAGE ##
 
-Copy the contents of the head tag from `bitcoinPay.php` into the head section of the HTML file you want to show bitcoinPay in. The div below the head tag is bitcoinPay itself. Paste it into any place in the already edited HTML file on your server.
+### 1. Create a page on your eStore with a form something like this: ###
+```php
+<php?
+$order_id     = CHANGE_ME; //Some unique order identifier  
+$order_value  = CHANGE_ME; //Fiat order value
+$amount_format= CHANGE_ME; //eg '$'.number_format($order_value,2)
+$currency     = CHANGE_ME; //eg 'USD', 'EUR', ...
+$callback_url = CHANGE_ME: //eg 'https://my.estore.com/bitcoinpay/StoreCallback.php'
+$bitcoinPayPHP= CHANGE_ME; //eg 'bitcoinPay/bitcoinPay.php'
+?>
+<form action="<?php echo $bitcoinPayPHP;?>" method="post"> 
+ <table cellpadding="10">
+  <tr>
+   <th>Order Number: </th>
+   <td><input type="input" name="memo" value="<?php echo $order_id;?>" readonly ><td>
+  </tr>
+  <tr>
+   <th>Order Total: </th>
+   <td><input type="input" name="amount_format" value="<?php echo $amount_format;?>"  readonly ><td>
+  </tr>
+  <tr><td colspan="2" align="right"><button type="submit">Continue...</button></td></tr>
+ </table>
+ <input type="hidden" name="amount" value="<?php echo $order_value;?>">
+ <input type="hidden" name="currency" value="<?php echo $currency;?>"> 
+ <input type="hidden" name="callback" value="<?php echo $callback_url;?>">
+</form>
+```
 
-Edit __bitcoinPay_conf.php__ to set the default wallet to your mainnet wallet.
+### 2. Edit __bitcoinPay_conf.php__ to set the default wallet to your mainnet wallet. ###
+```php
+define('DEFAULT_WALLET'   ,'wallet_mainnet');	
+```
 
-There is a light theme available for bitcoinPay. If you want to use it, uncomment this line in your bitcoinPay.php file:
-
+### 3. There is a light theme available for bitcoinPay. ###
+If you want to use it, uncomment this line in your bitcoinPay.php file:
 ```
 <link rel="stylesheet" href="bitcoinPay_light.css">
 ```
+### Do not use bitcoinPay on XHTML sites### 
+That causes some weird scaling issues.
 
-**Do not use bitcoinPay on XHTML** sites. That causes some weird scaling issues.
-### Lock Down Security ###
+## LOCK DOWN SECURITY ##
+### 1. Set files to Read Only ###
 Example using the shell command line:
 ```
 $ cd <bitcoinPay folder>
 $ chmod 0444 *
 $ cd ..
 $ chmod 0555 <bitcoinPay folder>
+```
+### 2. Remove or hide testnet wallet ###
+You don't want someone tricking your system into using your testnet wallet.
+
+Example using the shell command line:
+```
+$ cd <bitcoinPay folder>
+$ rm wallet_testnet.php
 ```
 
