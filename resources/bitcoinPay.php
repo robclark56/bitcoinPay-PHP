@@ -114,8 +114,8 @@ define('CHECK_SETTLED','checksettled');
 define('BITCOIN_LOGO'   ,'&#x20bf;');
 
 
-if(  ($argv[1] == CHECK_SETTLED)  	//called with command line argument (e.g. cron job)
-   || isset($_GET[CHECK_SETTLED])	//called as URL (testing)
+if( ($argv[1] == CHECK_SETTLED)    //called with command line argument (e.g. cron job)
+  || isset($_GET[CHECK_SETTLED])   //called as URL (testing)
   ){
  //cron mode
  $_POST['Action'] = CHECK_SETTLED;
@@ -159,11 +159,11 @@ switch($_POST['Action']){
 	 'Expiry'    =>EXPIRY_SECONDS
 	 )		
 	);
-       exit;
+	exit;
 
   //MODE 1, CASE 3 ($address & $btc set)
   //MODE 2         ($address & $btc not set)
-  case CHECK_SETTLED:
+ case CHECK_SETTLED:
      $CS = checkSettled($Wallet,$address,$btc);
      //If txid exists then payment has been broadcast to blockchain
      if($CS['txid']){
@@ -481,6 +481,7 @@ class bpDatabase {
   }
   
  public function newPR($address,$payment_request,$message,$currency,$amount,$BTC,$expiry_seconds,$mine_seconds,$minConfirmations,$callback,$walletName){
+    $message = str_replace ( "'" , "''" , $message) ; //SQL: escape single quotes if present 
     $sql  = "INSERT into $this->db_table (wallet_name,address,payment_request,memo,currency,amount,BTC,expiry_seconds,mine_seconds,minConfirmations,callback) ";
     $sql .= "VALUES ('$walletName','$address','$payment_request','$message','$currency','$amount','$BTC','$expiry_seconds','$mine_seconds','$minConfirmations','$callback')";	
     mysqli_query($this->mysqli,$sql);
