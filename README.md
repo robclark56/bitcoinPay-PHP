@@ -81,17 +81,6 @@ The important things to note are:
   * The xpub at the master ('m') level can generate addresses for many different coins (Bitcoin, Litecoin,...). We do not want to use the xpub from this level. 
   * The xpub from the bitcoin (or Bitcoin-Testnet) level is what is needed for this project.
   
-### Where do I get my xpub? ###
-Your wallet software will give you your xpub:
-
-1. Electrum: Open the wallet you want to receive funds into. Wallet --> Information.
-1. Make your own: 
-   * Go to https://iancoleman.io/bip39/
-   * Generate __AND SAVE__ a new 12-word seed
-   * Select Coin: __BTC-Bitcoin__ for mainnet, or __BTC-Bitcoin Testnet__ for testnet
-   * Copy the _Account Extended Public Key_ (not the _BIP32 Extended Public Key_)
-1. Other wallets: Check your documentation.
-
 ### How does bitcoinPay-PHP get the next receiving address from the xpub? ###
 There is an undocumented feature at the [smartbit.com.au API](https://www.smartbit.com.au/api). If you give an xpub to the _address_ API call, it returns the next un-used receiving address.
 
@@ -130,7 +119,19 @@ The cron job runs periodically to check pending payments. `bitcoinPay.php`can be
  |No|N/A|N/A|Not Tracked|
 
 ## PREPARATION ##
-### 1. Generate Private/Public key pair ##
+### 1. Get your xpub & tpub ###
+Your wallet software will give your xpub/tpub. Examples shown below.
+
+1. Coinomi: Select Bitcoin -> (3-dot menu) -> Account Details
+1. Electrum: Open the wallet you want to receive funds into. Wallet --> Information.
+1. Make your own: 
+   * Go to https://iancoleman.io/bip39/
+   * Generate __AND SAVE__ a new 12-word seed
+   * Select Coin: __BTC-Bitcoin__ for mainnet, or __BTC-Bitcoin Testnet__ for testnet
+   * Copy the _Account Extended Public Key_ (not the _BIP32 Extended Public Key_)
+1. Other wallets: Check your documentation.
+
+### 2. Generate Private/Public key pair ##
 To generate a Private/Public key pair, use one of these options:  
 
 1. Upload [generateKeys.php](https://github.com/robclark56/bitcoinPay-PHP/blob/master/utilities/generateKeys.php) to your host computer. Then run from the command line interface: `$ php generateKeys.php`
@@ -151,7 +152,7 @@ U4UZulZEer8ss8l62QIDAQAB
 -----END PUBLIC KEY-----
 ```
 
-### 2. Create SQL Database ###
+### 3. Create SQL Database ###
 You will need to create a mySQL database. Consult your host server documentation.
 
 For example, if you have access to cPanel, [these instructions](https://support.hostgator.com/articles/cpanel/how-do-i-create-a-mysql-database-a-user-and-then-delete-if-needed) can help.
@@ -199,7 +200,7 @@ Some webserver hosts do not permit use of the PHP mail() function for security r
 * Install PHPMailer in a folder called `PHPMailer`
 * Edit the _bitcoinPaySendEmail()_ function in the 2 files as below
   * Change ` if(false){ //false = use PHPMailer`
-  * Change all lines with CHANGE_ME
+  * Edit all lines with CHANGE_ME
   
 ## TESTING ##
 Use your browser to visit your URLs like this:
@@ -207,7 +208,7 @@ Use your browser to visit your URLs like this:
 * `https://my.estore.com/bitcoinPay/bitcoinPay.php?checksettled`
   * Note: This displays nothing if there are no pending payments, so _blank screen_ is a good response. The only point in trying this is to confirm there are no PHP configuration or syntax errors.
 * `https://my.estore.com/bitcoinPay/StoreCallback.php`
-  * You should receive an email with this is the body: "Hacking Attempt???". This is the expected response when this file is called with the wrong POST parameters.
+  * You should receive an email with this is the body: "Hacking Attempt???". This is the expected response when this file is called with the wrong, or no, POST parameters.
 * `https://my.estore.com/bitcoinPay/StoreCheckout.php`
 * `https://my.estore.com/bitcoinPay/StoreCheckout.php?order_id=100`
 * `https://my.estore.com/bitcoinPay/StoreCheckout.php?wallet=wallet_testnet`
@@ -222,11 +223,11 @@ or you can check my test sites here:
 * [Order for USD 5.00 (testnet)](http://raspibolt.epizy.com/bitcoinPay/StoreCheckout.php?wallet=wallet_testnet&order_id=100)
 
 
-## LIVE USEAGE ##
+## LIVE USAGE ##
 
 ### 1. Create a page on your eStore with a form something like this: ###
 ```php
-<php?
+<?php
 $order_id     = CHANGE_ME; //Some unique order identifier  
 $order_value  = CHANGE_ME; //Fiat order value
 $amount_format= CHANGE_ME; //eg '$'.number_format($order_value,2)
@@ -262,7 +263,7 @@ If you want to use it, uncomment this line in your bitcoinPay.php file:
 ```
 <link rel="stylesheet" href="bitcoinPay_light.css">
 ```
-### Do not use bitcoinPay on XHTML sites### 
+### 4. Do not use bitcoinPay on XHTML sites ### 
 That causes some weird scaling issues.
 
 ## LOCK DOWN SECURITY ##
