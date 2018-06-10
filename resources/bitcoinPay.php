@@ -4,7 +4,7 @@ bitcoinPay.php
 	See https://github.com/robclark56/bitcoinPay-PHP
 
 FUNCTIONS
-This file performs a number of different fuctions, depending on how it is called.
+This file performs a number of different functions, depending on how it is called.
 
 	* [Mode 1] Interactive
 		Performs backend functions and passes results back to bitcoinPay.js
@@ -31,14 +31,14 @@ SYNTAX MODE 1 (Interactive):
 		Returns 
 			HTML webpage with BTC value and a [Get Payment Request] button	
 	
-        CASE 2: getInvoice
-        	https://my.estore.com/bitcoinPay/bitcoinPay.php[?wallet=WalletName]
+	CASE 2: getInvoice
+		https://my.estore.com/bitcoinPay/bitcoinPay.php[?wallet=WalletName]
         	
 		GET Parameters:
 			wallet        = [Optional] a wallet name (e.g. if wallet=MyWallet, then MyWallet.php must exist)
 			                Default: The wallet name is taken from bitcoinPay_conf.php
 		POST Parameters: 
-		        Action        = getinvoice
+			Action        = getinvoice
 			amount        = BTC amount in satoshis (e.g. 1003003)
 			memo          = memo text (e.g. 'Order 42')
 			currency      = 3 character currency from https://en.wikipedia.org/wiki/ISO_4217#Active_codes (e.g. 'USD', 'EUR', etc)
@@ -48,10 +48,10 @@ SYNTAX MODE 1 (Interactive):
 		Returns JSON encoding of these values:
 	 		Error         = Only if an error occured
 	 		Invoice       = Payment Request  
-	                Address       = Bitcoin address
+			Address       = Bitcoin address
 	 		BTC           = Bitcoin amount
-	                Memo          = the POST memo text
-	                Expiry        = Seconds until this Payment Request expires
+			Memo          = the POST memo text
+			Expiry        = Seconds until this Payment Request expires
 	                
 	CASE 3: checkSettled
 		https://my.estore.com/bitcoinPay/bitcoinPay.php?[?&wallet=WalletName]	
@@ -66,7 +66,7 @@ SYNTAX MODE 1 (Interactive):
 			memo          = memo text (e.g. 'Order 42')
 			
 		Returns JSON encoding of these values:	
-		  	settled       = true (if the payment is complete), else false 
+			settled       = true (if the payment is complete), else false 
 			confirmations = the number of confirmations at this time
 			
 			
@@ -77,35 +77,35 @@ SYNTAX MODE 2 (Cron):
 
 		This is 'cron job' mode. All pending payments are checked. If a settled payment is found, the callback URL is called
 		with these POST parameters:
-		       	 
-   		[status] => 'Paid' or 'underPaid'
-		[isTestnet] => true or false
-    		[data] => Array(
-           		[id] => internal database id. Can be ignored.
-            		[wallet_name] => e.g. wallet_testnet
-            		[address] => The bitcoin address that received the payment
-            		[BTC] => The bitcoin value received
-            		[memo] => e.g. Order 42
-            		[currency] => e.g. USD
-            		[amount] => Fiat value of invoice. e.g. 80  (for $80)
-            		[minConfirmations] => Minimum confirmations required for this value transaction
-            		[callback] => e.g. https://my.estore.com/bitcoinPay/StoreCallback.php
-            		[gmt_request] => The GMT time the payment request was generated. e.g. 2018-06-04 07:55:00
-            		[gmt_first_seen] => The GMT time transaction was broadcast to the blockchain  e.g. 2018-06-04 07:57:48
-            		[gmt_expiry_limit] => The GMT time the payment request expired.  e.g. 2018-06-04 08:10:00
-            		[gmt_mined] => The GMT time the transaction was mined. e.g. 2018-06-04 08:15:36
-            		[gmt_mine_limit] => The GMT time by which the payment must have been mined by. e.g. 2018-06-04 10:55:00
-            		[confirmations] => Confirmations at this time
-            		[txid] => Transaction ID. e.g. e0aa695a827...f57424887243
-            		[settled] => true = Payment complete. (Should never be false)
-        		)
-    		[hash] => ([data][address], encrypted with the Private Key) e.g. 5678077bf0cbd...58a08b709ae3c6. 
-    			To check these data are from the correct source: 
-    				([data][address]) must equal ([hash], decrypted with the Public Key).
-    		[fiatValue] => Array  (
-            		[original] => The original invoice value in fiat. e.g. 80
-            		[now] => The value of the BTC when this callback was sent. 79.8221771016
-        	   	)
+		    
+	[status] => 'Paid' or 'underPaid'
+	[isTestnet] => true or false
+	[data] => Array(
+		[id] => internal database id. Can be ignored.
+		[wallet_name] => e.g. wallet_testnet
+		[address] => The bitcoin address that received the payment
+		[BTC] => The bitcoin value received
+		[memo] => e.g. Order 42
+		[currency] => e.g. USD
+		[amount] => Fiat value of invoice. e.g. 80  (for $80)
+		[minConfirmations] => Minimum confirmations required for this value transaction
+		[callback] => e.g. https://my.estore.com/bitcoinPay/StoreCallback.php
+		[gmt_request] => The GMT time the payment request was generated. e.g. 2018-06-04 07:55:00
+		[gmt_first_seen] => The GMT time transaction was broadcast to the blockchain  e.g. 2018-06-04 07:57:48
+		[gmt_expiry_limit] => The GMT time the payment request expired.  e.g. 2018-06-04 08:10:00\
+		[gmt_mined] => The GMT time the transaction was mined. e.g. 2018-06-04 08:15:36
+		[gmt_mine_limit] => The GMT time by which the payment must have been mined by. e.g. 2018-06-04 10:55:00
+		[confirmations] => Confirmations at this time
+		[txid] => Transaction ID. e.g. e0aa695a827...f57424887243
+		[settled] => true = Payment complete. (Should never be false)
+	)
+	[hash] => ([data][address], encrypted with the Private Key) e.g. 5678077bf0cbd...58a08b709ae3c6. 
+    		To check these data are from the correct source: 
+    		([data][address]) must equal ([hash], decrypted with the Public Key).
+	[fiatValue] => Array  (
+		[original] => The original invoice value in fiat. e.g. 80
+		[now] => The value of the BTC when this callback was sent. 79.8221771016
+	)
 
 */
 
@@ -140,12 +140,11 @@ switch($_POST['Action']){
  case 'getinvoice':
  	$PR = $Wallet->getPaymentRequest($_POST['message'],$_POST['amount']);
  	if(empty($PR['error'])){
-   	  $DB = new bpDatabase;
- 	  $DB->newPR($PR['address'],$PR['payment_request'], $_POST['message'],$currency,$currencyAmount,$PR['BTC'], 
- 	  	      EXPIRY_SECONDS, MINE_SECONDS,
- 	              $Wallet->getMinConfirmations($PR['BTC']),
- 	              $callback, $walletName
- 	              );
+		$DB = new bpDatabase;
+		$DB->newPR($PR['address'],$PR['payment_request'], $_POST['message'],$currency,$currencyAmount,$PR['BTC'], 
+			EXPIRY_SECONDS, MINE_SECONDS, $Wallet->getMinConfirmations($PR['BTC']),
+			$callback, $walletName
+		);
  	}
 	//Comment out next 1 line if you do not want to receive GetInvoice notifications
 	bitcoinPaySendEmail(EMAIL_TO, EMAIL_TO_NAME,'[bitcoinPay] GetInvoice',print_r($PR,1)."\n\nFile:".__FILE__);
@@ -252,35 +251,35 @@ function checkSettled($Wallet, $address,$btc){
     //MODE 1, CASE 3
     //Query for 1 payment
     $CP = $Wallet->checkPayment($address,$btc); 
-    if($CP && !$CP['success']){
-     return array('error' =>"Unable to check address $address");	
-    }
-    //echo "CP = ".print_r($CP,1);
- // bitcoinPaySendEmail(EMAIL_TO, EMAIL_TO_NAME,'[bitcoinPay] checksettled',print_r($CP,1));
-    $transactions = $CP['address']['transactions'];
-    if(!$transactions) {
-	return array( 'result' =>"no transactions");
-    }
-    foreach($transactions as $transaction){
-     //echo "\n".print_r($transaction['outputs'],1);
-     if(!$transaction['outputs']){
-	return array('result' =>"no outputs");
-     	exit;
-     }
-     foreach($transaction['outputs'] as $output){
-      if($output['addresses'][0]==$address  && $output['value']==$btc){
-       return array(
-		'address'	=>$address,
-		'BTC' 		=>$btc,
-		'confirmations' =>$transaction['confirmations'],
-		'txid'          =>$transaction['txid'],
-		'gmt_first_seen'=>gmdate('Y-m-d H:i:s', $transaction['first_seen']),
-		'gmt_mined'     =>gmdate('Y-m-d H:i:s', $transaction['time']),
-		'settled'	=>$Wallet->isSettled($transaction['confirmations'],$btc)
-		); 		
-      }
-     }
-    } 
+		if($CP && !$CP['success']){
+			return array('error' =>"Unable to check address $address");	
+		}
+		//echo "CP = ".print_r($CP,1);
+		// bitcoinPaySendEmail(EMAIL_TO, EMAIL_TO_NAME,'[bitcoinPay] checksettled',print_r($CP,1));
+		$transactions = $CP['address']['transactions'];
+		if(!$transactions) {
+			return array( 'result' =>"no transactions");
+ 		}
+		foreach($transactions as $transaction){
+			//echo "\n".print_r($transaction['outputs'],1);
+			if(!$transaction['outputs']){
+				return array('result' =>"no outputs");
+				exit;
+			}
+ 			foreach($transaction['outputs'] as $output){
+				if($output['addresses'][0]==$address  && $output['value']==$btc){
+      	 	return array(
+					'address'	=>$address,
+					'BTC' 		=>$btc,
+					'confirmations' =>$transaction['confirmations'],
+					'txid'          =>$transaction['txid'],
+					'gmt_first_seen'=>gmdate('Y-m-d H:i:s', $transaction['first_seen']),
+					'gmt_mined'     =>gmdate('Y-m-d H:i:s', $transaction['time']),
+					'settled'	=>$Wallet->isSettled($transaction['confirmations'],$btc)
+					); 		
+				}
+			}
+   	} 
   } else {
     //MODE 2
     //Query all unpaid payments
@@ -290,12 +289,12 @@ function checkSettled($Wallet, $address,$btc){
     
     $DB = new bpDatabase;
     
-    ///// Phase 1
-    $NewTransactions = $DB->getNewTransactions();
+		///// Phase 1
+		$NewTransactions = $DB->getNewTransactions();
 
-if($NewTransactions)echo "NewTransactions:".print_r($NewTransactions,1)."\n\n";
+		if($NewTransactions)echo "NewTransactions:".print_r($NewTransactions,1)."\n\n";
     //See if matching transaction exists on blockchain for each NewTransaction
-    if($NewTransactions){
+		if($NewTransactions){
      foreach($NewTransactions as $NT){
       //It is possible that each transaction is for a different wallet.
       if(isset($Wallet)) unset($Wallet);
@@ -320,26 +319,26 @@ if($NewTransactions)echo "NewTransactions:".print_r($NewTransactions,1)."\n\n";
      }
     }
      
-   ///// Phase 2
-   //See if any payments that have been broadcast have sufficient confirmations
-   $PendingTransactions = $DB->getPendingTransactions();
- if($PendingTransactions)  echo "\nPendingTransactions = ".print_r($PendingTransactions,1);
-   if(empty($PendingTransactions))  exit;
+   	///// Phase 2
+   	//See if any payments that have been broadcast have sufficient confirmations
+		$PendingTransactions = $DB->getPendingTransactions();
+		if($PendingTransactions)  echo "\nPendingTransactions = ".print_r($PendingTransactions,1);
+   	if(empty($PendingTransactions))  exit;
 
-   foreach($PendingTransactions as $PT){
+   	foreach($PendingTransactions as $PT){
      //It is possible that each transaction is for a different wallet.
      if(isset($Wallet)) unset($Wallet);
      include_once $PT['wallet_name'].'.php';
      $Wallet = new Wallet;
      /*  eg $PT
      [id] => 54
-     [address] => mgjQFqyrWNihreGHo4331KgEgHzAyEASgW
+     [address] => mgjQFqyr....HzAyEASgW
      [BTC] => 0.01060340
      [memo] => Order 42
      [currency] => USD
      [amount] => 80
      [minConfirmations] => 5
-     [callback] => https://ubwh.com.au/BPbeta1/StoreCallback.php
+     [callback] => https://my.estore.com/bitcoinPay/StoreCallback.php
      [gmt_mine_limit] => 2018-06-01 07:49:37
      */
      $CS = checkSettled($Wallet, $PT['address'],$PT['BTC']);
@@ -347,7 +346,7 @@ if($NewTransactions)echo "NewTransactions:".print_r($NewTransactions,1)."\n\n";
      [address] => mgjQFqyrWNihreGHo4331KgEgHzAyEASgW
      [BTC] => 0.01060340
      [confirmations] => 893
-     [txid] => 34859e48e71067dbbd04fe3906ebc64371fe2a4b60465dab5d1d36788f5708a9
+     [txid] => 34859e48e71067db......b5d1d36788f5708a9
      [gmt_first_seen] => 2018-06-01 06:43:03
      [gmt_mined] => 2018-06-01 06:44:38
      [settled] => 1
@@ -369,12 +368,12 @@ if($NewTransactions)echo "NewTransactions:".print_r($NewTransactions,1)."\n\n";
        openssl_private_encrypt($PT[address], $encrypted_address, ESTORE_PRIV_KEY);
        CallBack($PT['callback'],
        		array('status' => $statusText,
-		      'isTestnet' => $Wallet->isTestnet(), 
-       		      'data'   => array_merge($PT,$CS),
-       		      'hash'   => bin2hex($encrypted_address),
-       		      'fiatValue'  => array('original'=>$OriginalFiatValue,'now'=>$CurrentFiatValue)
-       	              )
-               );
+								'isTestnet' => $Wallet->isTestnet(), 
+								'data'   => array_merge($PT,$CS),
+								'hash'   => bin2hex($encrypted_address),
+								'fiatValue'  => array('original'=>$OriginalFiatValue,'now'=>$CurrentFiatValue)
+					)
+ 				);
      }
     }
     exit;
@@ -393,7 +392,7 @@ function CallBack($URL, $data){
         	 'header'  => 'Content-type: application/x-www-form-urlencoded',
         	 'content' => http_build_query($data)
     	  	)
-           );
+				);
   $context  = stream_context_create($opts);
   @file_get_contents($URL, false, $context);
 }
