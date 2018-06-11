@@ -39,9 +39,9 @@ define('DB_BASE','xxxxx');
 
 //Optional EMAIL notifications
 // To disable, leave EMAIL_TO as '' (empty string)
-define('EMAIL_TO'       ,'me@my.estore.com'); 	//e.g. 'me@me@my.estore.com' Empty string disables emails
+define('EMAIL_TO'       ,'me@my.estore.com'); 	//e.g. 'me@my.estore.com' Empty string disables emails
 define('EMAIL_TO_NAME'  ,'bitcoinPay'); 	      //e.g. 'My Name'
-define('EMAIL_FROM'     ,'me@my.estore.com'); 	//e.g. 'me@me@my.estore.com'
+define('EMAIL_FROM'     ,'me@my.estore.com'); 	//e.g. 'me@my.estore.com'
 define('EMAIL_FROM_NAME','bitcoinPay');
 
 ?>
