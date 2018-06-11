@@ -1,8 +1,5 @@
-# UNDER CONSTRUCTION #
-
-
 # bitcoinPay-PHP
-The files in this project will allow you to safely accept Bitcoin payments on your online store (eStore).
+The files in this project will allow you to safely accept Bitcoin payments on your online PHP-based store (eStore).
 
 ![bitcoinPay GIF](images/bitcoinPay_demo.gif)
 
@@ -22,11 +19,6 @@ The files in this project will allow you to safely accept Bitcoin payments on yo
   * Live exchange rate conversions between Fiat and BTC
   * Encryption protected messaging from bitcoinPay back to the eStore site.
   * CSS formatting
-
-If want to tip me you can use my LightningTip as below.
-(_https_ not used as this is hosted on a free web server without SSL certificates. You will not be entering any sensitive data.)
-* [mainnet](http://raspibolt.epizy.com/LT/lightningTip.php)
-* [testnet](http://raspibolt.epizy.com/LT/lightningTip.php?testnet=1)
 
 ## CREDIT ##
 bitcoinPay-PHP is based on [LightningTip-PHP](https://github.com/robclark56/lightningtip-PHP), which in turn is based on [LightningTip](https://github.com/michael1011/lightningtip/blob/master/README.md) by [michael1011](https://github.com/michael1011/lightningtip).
@@ -252,18 +244,28 @@ $bitcoinPayPHP= CHANGE_ME; //eg 'bitcoinPay/bitcoinPay.php'
  <input type="hidden" name="callback" value="<?php echo $callback_url;?>">
 </form>
 ```
-
-### 2. Edit __bitcoinPay_conf.php__ to set the default wallet to your mainnet wallet. ###
+### 2. Process Payment Notifications ###
+Edit _StoreCallback.php_ and change these two sections as appropriate for your eStore.
+```php
+case 'fullyPaid':
+   //Add code here to process fully paid order
+   break;
+   
+  case 'underPaid':
+  //Add code here to process under-paid order
+  break;
+```
+### 3. Edit __bitcoinPay_conf.php__ to set the default wallet to your mainnet wallet. ###
 ```php
 define('DEFAULT_WALLET'   ,'wallet_mainnet');	
 ```
 
-### 3. There is a light theme available for bitcoinPay. ###
+### 4. There is a light theme available for bitcoinPay. ###
 If you want to use it, uncomment this line in your bitcoinPay.php file:
 ```
 <link rel="stylesheet" href="bitcoinPay_light.css">
 ```
-### 4. Do not use bitcoinPay on XHTML sites ### 
+### 5. Do not use bitcoinPay on XHTML sites ### 
 That causes some weird scaling issues.
 
 ## LOCK DOWN SECURITY ##
@@ -283,4 +285,10 @@ Example using the shell command line:
 $ cd <bitcoinPay folder>
 $ rm wallet_testnet.php
 ```
+
+---
+If want to tip me, you can use my [LightningTip](https://github.com/robclark56/lightningtip-PHP "lightningTip-PHP") as below.
+(_https_ not used as these are hosted on a free web server without SSL certificates. You will not be entering any sensitive data.)
+* [mainnet](http://raspibolt.epizy.com/LT/lightningTip.php)
+* [testnet](http://raspibolt.epizy.com/LT/lightningTip.php?testnet=1)
 
