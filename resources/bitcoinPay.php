@@ -19,7 +19,7 @@ SYNTAX MODE 1 (Interactive):
 		https://my.estore.com/bitcoinPay/bitcoinPay.php[?wallet=WalletName]
         	
 		GET Parameters:
-			wallet        = [Optional] a wallet name (e.g. if wallet=MyWallet, then MyWallet.php must exist)
+			wallet        = [Optional] a wallet name 
 			                Default: The wallet name is taken from bitcoinPay_conf.php
 		POST Parameters: 
 			amount        = the invoice value in fiat (eg. 80.00 for $80.00) 
@@ -35,7 +35,7 @@ SYNTAX MODE 1 (Interactive):
 		https://my.estore.com/bitcoinPay/bitcoinPay.php[?wallet=WalletName]
         	
 		GET Parameters:
-			wallet        = [Optional] a wallet name (e.g. if wallet=MyWallet, then MyWallet.php must exist)
+			wallet        = [Optional] a wallet name 
 			                Default: The wallet name is taken from bitcoinPay_conf.php
 		POST Parameters: 
 			Action        = getinvoice
@@ -57,7 +57,7 @@ SYNTAX MODE 1 (Interactive):
 		https://my.estore.com/bitcoinPay/bitcoinPay.php?[?&wallet=WalletName]	
 
 		GET Parameters
-			wallet        = [Optional] a wallet name (e.g. if wallet=MyWallet, then MyWallet.php must exist)
+			wallet        = [Optional] a wallet name 
 			                Default: The wallet name is taken from bitcoinPay_conf.php
 		POST Parameters
 			Action        = checksettled
@@ -131,8 +131,7 @@ if( ($argv[1] == CHECK_SETTLED)    //called with command line argument (e.g. cro
  $callback       =$_POST['callback'];
 
  $walletName = $_GET['wallet']?$_GET['wallet']:DEFAULT_WALLET;
- include "$walletName.php";
- $Wallet = new Wallet;
+ $Wallet = new Wallet($xpub[$walletName]);
 }
 
 switch($_POST['Action']){
@@ -289,17 +288,16 @@ function checkSettled($Wallet, $address,$btc){
     
     $DB = new bpDatabase;
     
-		///// Phase 1
-		$NewTransactions = $DB->getNewTransactions();
+	///// Phase 1
+	$NewTransactions = $DB->getNewTransactions();
 
-		if($NewTransactions)echo "NewTransactions:".print_r($NewTransactions,1)."\n\n";
+	if($NewTransactions)echo "NewTransactions:".print_r($NewTransactions,1)."\n\n";
     //See if matching transaction exists on blockchain for each NewTransaction
-		if($NewTransactions){
+	if($NewTransactions){
      foreach($NewTransactions as $NT){
       //It is possible that each transaction is for a different wallet.
       if(isset($Wallet)) unset($Wallet);
-      include_once $NT['wallet_name'].'.php';
-      $Wallet = new Wallet;
+	  $Wallet = new Wallet($xpub[$NT['wallet_name']]);
       
       $CS = checkSettled($Wallet, $NT['address'],$NT['BTC']);
       echo print_r($CS,1);     
@@ -321,15 +319,14 @@ function checkSettled($Wallet, $address,$btc){
      
    	///// Phase 2
    	//See if any payments that have been broadcast have sufficient confirmations
-		$PendingTransactions = $DB->getPendingTransactions();
-		if($PendingTransactions)  echo "\nPendingTransactions = ".print_r($PendingTransactions,1);
+	$PendingTransactions = $DB->getPendingTransactions();
+	if($PendingTransactions)  echo "\nPendingTransactions = ".print_r($PendingTransactions,1);
    	if(empty($PendingTransactions))  exit;
 
    	foreach($PendingTransactions as $PT){
      //It is possible that each transaction is for a different wallet.
      if(isset($Wallet)) unset($Wallet);
-     include_once $PT['wallet_name'].'.php';
-     $Wallet = new Wallet;
+     $Wallet = new Wallet($xpub[$PT['wallet_name']]);
      /*  eg $PT
      [id] => 54
      [address] => mgjQFqyr....HzAyEASgW
@@ -519,7 +516,6 @@ class bpDatabase {
          ", TIMESTAMPDIFF(SECOND, timestamp, CURRENT_TIMESTAMP) - expiry_seconds as ExpiredSeconds ".
          "FROM $this->db_table ".
          "WHERE expired IS NULL "
-         //."AND confirmations = 0"
          ;
          
   $q = mysqli_query($this->mysqli,$sql);
@@ -553,10 +549,14 @@ class bpDatabase {
 
 }
 
-class Wallet_parent{ 
+class Wallet{ 
     private $baseurl = 'https://api.smartbit.com.au/v1/blockchain';
     private $testurl = 'https://testnet-api.smartbit.com.au/v1/blockchain';
-    protected $xpub;  //'xpub...' = mainnet. 'tpub...' = testnet
+    private $xpub;  
+	
+	function __construct($xpub) {
+        $this->xpub = $xpub;
+    }
     
     public function isTestnet() { 
        return !( stripos( $this->xpub , 'xpub' ) === 0 ||
