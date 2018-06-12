@@ -167,8 +167,6 @@ After you have created your database you should have this information:
 * Download the [latest release](https://github.com/robclark56/bitcoinPay-PHP/releases), and unzip.
 * Upload all files from the unzipped _resources_ folder to your webserver folder. __Note__: Due to JavaScript security, bitcoinPay.php must be hosted at the same domain as bitcoinPay.js
 * Edit files.
-  * __wallet_mainnet.php__: Enter your xpub value.
-  * __wallet_testnet.php__: Enter your tpub value.
   * __bitcoinPay_conf.php__: Edit  values as needed. Leave _WALLET_DEFAULT_ set to _wallet_testnet_.
   * __StoreCheckout.php__: Edit the CHANGE_ME section.
   * __StoreCallback.php__: Edit the CHANGE_ME section.
