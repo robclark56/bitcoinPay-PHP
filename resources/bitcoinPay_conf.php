@@ -17,9 +17,14 @@ define('MINE_SECONDS'   ,'10800');	//e.g. 3 hours. Should be larger than EXPIRY_
 //  e.g.  '/home/user/public_html/bitcoinPay'
 define('WORKING_DIRECTORY','/home/user/public_html/bitcoinPay');	//Used in cron mode.
 
+// Extended Public Keys
+//  One line per wallet
+//  No limit to number of wallets, but xpub for DEFAULT_WALLET must exist
+$xpub['wallet_mainnet'] = 'xpub.....1Dwb';
+$xpub['wallet_testnet'] = 'tpub.....7RkP';
+
 // The name of the default wallet.
-// e.g. 'wallet_testnet'  => 'wallet_testnet.php' contains the wallet definition
-define('DEFAULT_WALLET'   ,'wallet_testnet');	
+define('DEFAULT_WALLET'   ,'wallet_testnet');
 
 // eStore PrivateKey. Used to sign callback messages to the eStore, after payment has been confirmed.
 // See https://github.com/robclark56/bitcoinPay-PHP/blob/master/README.md#1-generate-privatepublic-key-pair
