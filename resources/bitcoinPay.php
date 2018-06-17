@@ -225,6 +225,7 @@ if($CurrencyError){
 
 <body>
  <div id="bitcoinPay" <?php if($testnet) echo ' class="testnet"';?>>
+  <p><?php echo ESTORE_NAME;?></p>
   <p id="bitcoinPayLogo"><?php echo BITCOIN_LOGO;?></p>
   <a>Pay by Bitcoin</a>
   <div id="bitcoinPayInputs">
