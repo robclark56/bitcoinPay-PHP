@@ -8,6 +8,8 @@
  See https://github.com/robclark56/bitcoinPay-PHP/blob/master/README.md
 
 */
+// eStore Name
+define('ESTORE_NAME' ,'My eStore');
 
 // Timout Values. For details, see https://github.com/robclark56/bitcoinPay-PHP/blob/master/README.md#monitoring-for-payments 
 define('EXPIRY_SECONDS' ,'900');	//e.g. 15 mins	
