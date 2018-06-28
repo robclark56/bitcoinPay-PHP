@@ -6,12 +6,18 @@
     color: #F5F5F5;
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
-
     text-align: center;
 }
 
+
+.bitcoinPayCurrency {
+    float: left;
+    margin-top: 0.9em;
+    margin-left: 0.5em;
+    width: 2em;
+}
+
 .bitcoinPayInput {
-//    width: 100%;
     display: inline-block;
     padding: 6px 10px;
     margin-top: 0.5em;
@@ -63,12 +69,23 @@
     box-sizing: border-box;
     text-align: left;
     font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
 }
 
 /* Hack for using placeholders on divs */
 #bitcoinPayMessage:empty:before {
     content: attr(placeholder);
     color: gray;
+}
+
+#bitcoinPayFiatInput {
+    width: 9em;
+    float: right;
+}
+
+#bitcoinPayBTC {
+    width: 9em;
+    float: right;
 }
 
 #bitcoinPayGetInvoice {
