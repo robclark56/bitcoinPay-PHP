@@ -294,3 +294,19 @@ function getVal(str) {
     var v = window.location.search.match(new RegExp('(?:[\?\&]'+str+'=)([^&]+)'));
     return v ? v[1] : null;
 }
+
+function updateBTC(exchRate) {
+    var fiat = document.getElementById('bitcoinPayFiatInput').value;
+    var BTC  = fiat/exchRate;
+    var MSG  = document.getElementById('bitcoinPayMessage').value;
+    var INV  = document.getElementById('bitcoinPayGetInvoice');
+
+    if((fiat) && (MSG)&&(MSG.trim()!='')){
+        INV.style.visibility='visible';        
+    } else {
+        INV.style.visibility='hidden';     
+    }
+    document.getElementById('bitcoinPayBTC').value = BTC.toFixed(8);
+    document.getElementById('bitcoinPayAmount').value = BTC.toFixed(8) * 100000000;
+    document.getElementById('bitcoinPayCurrencyAmount').value = fiat;
+}
