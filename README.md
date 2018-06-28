@@ -92,7 +92,7 @@ The 1st character of an Extended Public Key tells you what sort of wallet it com
 | Address Type  | mainnet | testnet|
 |----:|-------|-------|
 |P2PKH (eg) | xpub (1xxxxxx)| tpub (mxxxxxx)|
-|P2PKH (eg)| ypub (3xxxxx)| upub (2xxxxx)|
+|P2SH (eg)| ypub (3xxxxx)| upub (2xxxxx)|
 |Bech32 (eg)| zpub (bc1xxx)| vpub (tb1xxx)|
 
 [More info ...](https://support.samourai.io/article/49-xpub-s-ypub-s-zpub-s)
