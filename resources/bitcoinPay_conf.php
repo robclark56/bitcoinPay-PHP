@@ -32,11 +32,11 @@ define('DEFAULT_WALLET'   ,'wallet_testnet');
 // Default Currency. 
 // 3 character code from https://en.wikipedia.org/wiki/ISO_4217
 // Used for Manual Input mode
-define('DEFAULT_CURRENCY','AUD');
+define('DEFAULT_CURRENCY','USD');
 
 //Default Callback
 // Used for Manual Input mode
-define('DEFAULT_CALLBACK','https://ubwh.com.au/bitcoinPay/StoreCallback.php');
+define('DEFAULT_CALLBACK','https://my.estore.com/bitcoinPay/StoreCallback.php');
 
 // eStore PrivateKey. Used to sign callback messages to the eStore, after payment has been confirmed.
 // See https://github.com/robclark56/bitcoinPay-PHP/blob/master/README.md#2-generate-privatepublic-key-pair
