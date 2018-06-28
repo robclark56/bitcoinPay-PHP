@@ -169,9 +169,7 @@ if( ($argv[1] == CHECK_SETTLED)    //called with command line argument (e.g. cro
  }
 
  $walletName = $_GET['wallet']?$_GET['wallet']:DEFAULT_WALLET;
- include "$walletName.php";
- $Wallet = new Wallet;
- 
+ $Wallet = new Wallet($xpub[$walletName]);
 }
 
 switch($_POST['Action']){
