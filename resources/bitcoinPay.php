@@ -30,8 +30,24 @@ SYNTAX MODE 1 (Interactive):
  
 		Returns 
 			HTML webpage with BTC value and a [Get Payment Request] button	
+		
+	CASE 2: Display 'Get Payment Request' page
+		https://my.estore.com/bitcoinPay/bitcoinPay.php[?wallet=WalletName]
+        	
+		GET Parameters:
+			[none]
+			
+		POST Parameters: 
+			[none]
+ 
+		Purpose:
+			Allow user to manually input Memo & Fiat value, and get Payment request.
+			
+		Returns 
+			HTML webpage with BTC value and a [Get Payment Request] button	
 	
-	CASE 2: getInvoice
+	
+	CASE 3: getInvoice
 		https://my.estore.com/bitcoinPay/bitcoinPay.php[?wallet=WalletName]
         	
 		GET Parameters:
@@ -53,7 +69,7 @@ SYNTAX MODE 1 (Interactive):
 			Memo          = the POST memo text
 			Expiry        = Seconds until this Payment Request expires
 	                
-	CASE 3: checkSettled
+	CASE 4: checkSettled
 		https://my.estore.com/bitcoinPay/bitcoinPay.php?[?&wallet=WalletName]	
 
 		GET Parameters
@@ -111,31 +127,55 @@ SYNTAX MODE 2 (Cron):
 
 include "bitcoinPay_conf.php";
 define('CHECK_SETTLED','checksettled');
-define('BITCOIN_LOGO'   ,'&#x20bf;');
-
 
 if( ($argv[1] == CHECK_SETTLED)    //called with command line argument (e.g. cron job)
   || isset($_GET[CHECK_SETTLED])   //called as URL (testing)
   ){
- //cron mode
+ //Mode 2 (cron)
  $_POST['Action'] = CHECK_SETTLED;
  chdir(WORKING_DIRECTORY);
 } else {
- $amount         =$_POST['amount'];
- $amount_format  =$_POST['amount_format'];
- $memo           =$_POST['memo'];
- $currency       =$_POST['currency'];
- $currencyAmount =$_POST['currencyAmount'];
- $address        =$_POST['address'];
- $btc            =$_POST['btc'];
- $callback       =$_POST['callback'];
+  if(empty($_POST)){
+    //Allow Input
+    $allowInput = true;
+    $callback = DEFAULT_CALLBACK;
+  } else {
+    $amount         =$_POST['amount'];
+    $amount_format  =$_POST['amount_format'];
+    $memo           =$_POST['memo'];
+    $currency       =$_POST['currency'];
+    $currencyAmount =$_POST['currencyAmount'];
+    $address        =$_POST['address'];
+    $btc            =$_POST['btc'];
+    $callback       =$_POST['callback'];     
+  }
+ if(empty($currency)) $currency = DEFAULT_CURRENCY;
+
+ if($currency){
+  $ExchRate = getExchRate($currency);
+  if(empty($ExchRate)){
+   ?>
+   <!DOCTYPE html>
+   <html>
+   <head><meta charset="utf-8"><title>bitcoin Pay Error</title></head>
+   <body><h2>Error</h2>Unable to get Exchange Rate</body>
+   </html>
+   <?php
+    exit;
+   } else {
+    $BTC = number_format($_POST['amount'] / $ExchRate,8);
+    $satoshi = $BTC * 100000000;
+   }
+ }
 
  $walletName = $_GET['wallet']?$_GET['wallet']:DEFAULT_WALLET;
- $Wallet = new Wallet($xpub[$walletName]);
+ include "$walletName.php";
+ $Wallet = new Wallet;
+ 
 }
 
 switch($_POST['Action']){
- //MODE 1, CASE 2
+ //MODE 1, CASE 3
  case 'getinvoice':
  	$PR = $Wallet->getPaymentRequest($_POST['message'],$_POST['amount']);
  	if(empty($PR['error'])){
@@ -160,7 +200,7 @@ switch($_POST['Action']){
 	);
 	exit;
 
-  //MODE 1, CASE 3 ($address & $btc set)
+  //MODE 1, CASE 4 ($address & $btc set)
   //MODE 2         ($address & $btc not set)
  case CHECK_SETTLED:
      $CS = checkSettled($Wallet,$address,$btc);
@@ -182,41 +222,20 @@ switch($_POST['Action']){
      exit;
  
   default:
-   if(empty($_POST['memo'])) exit;
+    if(empty($_POST['memo']) && !$allowInput) exit;
 
    // fall through to displaying the HTML
 }
 
 //MODE 1, CASE 1
 $testnet = $Wallet->isTestnet();
-if($currency){
- $ExchRate = getExchRate($currency);
- if(empty($ExchRate)){
-   $CurrencyError = "Unable to get Exchange Rate for $currency";	
- } else {
-   $BTC = number_format($_POST['amount'] / $ExchRate,8);
-   $satoshi = $BTC * 100000000;
- }
-} else {
- $CurrencyError = "Currency not set";	
-}
-
-if($CurrencyError){
-?>
-  <!DOCTYPE html>
-  <html>
-  <head><meta charset="utf-8"><title>bitcoin Pay Error</title></head>
-  <body><h2>Error</h2><?php echo $CurrencyError;?></body>
-  </html>	
-<?php
-  exit;
-}
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <title>bitcoinPay</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
     <link rel="stylesheet" href="bitcoinPay.css">
     <!-- <link rel="stylesheet" href="bitcoinPay_light.css"> -->
     <script async defer src="https://cdn.rawgit.com/kazuhikoarase/qrcode-generator/886a247e/js/qrcode.js"></script>
@@ -225,18 +244,37 @@ if($CurrencyError){
 
 <body>
  <div id="bitcoinPay" <?php if($testnet) echo ' class="testnet"';?>>
-  <p><?php echo ESTORE_NAME;?></p>
-  <p id="bitcoinPayLogo"><?php echo BITCOIN_LOGO;?></p>
-  <a>Pay by Bitcoin</a>
+ <p><?php echo ESTORE_NAME;?></p>
+  <p id="bitcoinPayLogo"><i class="fab fa-btc"></i></p>
+  <a>Pay with Bitcoin</a>
   <div id="bitcoinPayInputs">
-   <input type="text" id="bitcoinPayMessage"        class="bitcoinPayInput"  value="<?php echo $_POST['memo']?>" disabled><br>
-   <input type="text" class="bitcoinPayInput" value="<?php echo "$currency $amount_format";?>" disabled><br> 
-   <input type="text" class="bitcoinPayInput" value="<?php echo "&#8383 $BTC";?>" disabled><br>
+   <input type="text" id="bitcoinPayMessage" class="bitcoinPayInput" <?php 
+      echo $allowInput ?
+        ' placeholder="Enter message" onkeyup="updateBTC('.$ExchRate.')" required' :  
+        ' value="'.$memo.'" disabled';
+    ?>><br>
+    <div style="width: 100%; display: inline-block;">
+        <div class="bitcoinPayCurrency"><?php echo $currency;?></div>
+        <div>
+        <input  class="bitcoinPayInput"  id="bitcoinPayFiatInput" <?php  
+       echo $allowInput ?
+        ' type="number"  placeholder="Enter amount" onkeyup="updateBTC('.$ExchRate.')"  required "' :
+        ' type="text" value="'.$amount_format.'" disabled "';
+     ?>>
+        </div>
+    </div>
+    <div style="width: 100%; display: inline-block;">
+        <div class="bitcoinPayCurrency"><i class="fab fa-btc"></i></div>
+        <div>
+         <input type="text" id="bitcoinPayBTC" class="bitcoinPayInput" value="<?php echo "$BTC";?>" onchange="updateBTC(this.value)" disabled>
+        </div>
+    </div>
+  <br>
    <input type="hidden" id="bitcoinPayAmount" value="<?php echo $satoshi;?>">
    <input type="hidden" id="bitcoinPayCurrency" value="<?php echo  $currency;?>">
-   <input type="hidden" id="bitcoinPayCurrencyAmount" value="<?php echo  $amount;?>">  
-   <input type="hidden" id="bitcoinPayCallback" value="<?php echo  $callback;?>">    
-   <button class="bitcoinPayButton" id="bitcoinPayGetInvoice" onclick="getPayReq()"><?php if($testnet) echo '[testnet] '?>Get payment request</button>
+   <input type="hidden" id="bitcoinPayCurrencyAmount" value="<?php echo $amount;?>">
+   <input type="hidden" id="bitcoinPayCallback" value="<?php echo  $callback;?>">
+   <button class="bitcoinPayButton" id="bitcoinPayGetInvoice" onclick="getPayReq()" <?php if($allowInput) echo ' style="visibility:hidden;"';?>><?php if($testnet) echo '[testnet] ';?>Get payment request</button>
    <div>  <a id="bitcoinPayError"></a> </div>
   </div>
  </div>
