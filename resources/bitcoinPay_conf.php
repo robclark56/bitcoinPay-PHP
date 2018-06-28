@@ -29,6 +29,15 @@ $xpub['wallet_testnet'] = 'tpub.....7RkP';
 // The name of the default wallet.
 define('DEFAULT_WALLET'   ,'wallet_testnet');
 
+// Default Currency. 
+// 3 character code from https://en.wikipedia.org/wiki/ISO_4217
+// Used for Manual Input mode
+define('DEFAULT_CURRENCY','AUD');
+
+//Default Callback
+// Used for Manual Input mode
+define('DEFAULT_CALLBACK','https://ubwh.com.au/bitcoinPay/StoreCallback.php');
+
 // eStore PrivateKey. Used to sign callback messages to the eStore, after payment has been confirmed.
 // See https://github.com/robclark56/bitcoinPay-PHP/blob/master/README.md#2-generate-privatepublic-key-pair
 define('ESTORE_PRIV_KEY',
