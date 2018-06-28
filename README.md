@@ -1,10 +1,15 @@
 # bitcoinPay-PHP
 The files in this project will allow you to safely accept Bitcoin payments on your online PHP-based store (eStore).
 
-![bitcoinPay GIF](images/bitcoinPay_demo.gif)
+| Checkout Mode | Manual Mode |
+|---|---|
+|![bitcoinPay GIF](images/bitcoinPay_demo.gif)|![bitcoinPayManual GIF](images/bitcoinPayManual_demo.gif)|
 
 ## FEATURES ##
 * Support for:
+  * Two Modes
+    * Checkout Mode: eStore provides memo & fiat values
+    * Manual Mode: User provides memo & fiat values
   * mainnet and testnet
   * Multiple fiat currencies
   * P2PKH addresses (e.g. 1xxxxxxxx).
@@ -32,7 +37,7 @@ A webserver that supports:
 At no point do you enter any of your bitcoin private keys. No hacker can spend your bitcoins. 
 
 You need to keep your webserver secure, as a hacker with sufficient privileges could exchange his/her xpub for yours and customers would start paying the hacker.
-## ECOMMERCE EXAMPLE ##
+## ECOMMERCE EXAMPLE - CHECKOUT MODE ##
 The intended audience for this project is users that have an existing online eCommerce site (eStore). Typically the customer ends up at a _checkout confirmation_ webpage with some _Pay Now_ button(s).
 
 In this project we include a very simple dummy eStore checkout page that serves as an example of how to deploy _bitcoinPay_. 
@@ -40,8 +45,11 @@ In this project we include a very simple dummy eStore checkout page that serves 
 ## DESIGN ##
 The basic flow is as follows:
 
-1. eStore displays a shopping cart page with a total payable (Fiat currency)
-1. User clicks _Pay Button_  => Redirected to PHP file which converts fiat value to BTC, and returns a confirmation page
+1. Checkout Mode:
+   1. eStore displays a shopping cart page with a total payable (Fiat currency)
+   1. User clicks _Pay Button_  => Redirected to PHP file which converts fiat value to BTC, and returns a confirmation page
+1. Manual Mode
+   1. User enters Memo and fiat value. PHP/Javascript calculates BTC value.
 1. User clicks _Get Payment Request_ => Javascript passes values to PHP file which responds with a Payment Request
 1. The PHP file continuously monitors the blockchain for matching transactions
 1. Customer makes payment with wallet
@@ -192,7 +200,7 @@ Some webserver hosts do not permit use of the PHP mail() function for security r
   * Change ` if(false){ //false = use PHPMailer`
   * Edit all lines with CHANGE_ME
   
-## TESTING ##
+## TESTING - CHECKOUT MODE ##
 Use your browser to visit your URLs like this:
 
 * `https://my.estore.com/bitcoinPay/bitcoinPay.php?checksettled`
@@ -205,17 +213,28 @@ Use your browser to visit your URLs like this:
 * `https://my.estore.com/bitcoinPay/StoreCheckout.php?wallet=wallet_mainnet`
 * `https://my.estore.com/bitcoinPay/StoreCheckout.php?wallet=wallet_mainnet&order_id=100`
 
-or you can check my test sites here:
+or you can check my test site here:
 
 (_https_ not used as this is hosted on a free web server without SSL certificates. You will not be entering any sensitive data.)
 
 * [Order for USD 80.00 (mainnet)](http://raspibolt.epizy.com/bitcoinPay/StoreCheckout.php?wallet=wallet_mainnet) CAREFUL: Don't send me real BTC.
 * [Order for USD 5.00 (testnet)](http://raspibolt.epizy.com/bitcoinPay/StoreCheckout.php?wallet=wallet_testnet&order_id=100)
 
+## TESTING - MANUAL MODE ##
+Confirm Checkout Mode (above) is working.
+
+Use your browser to visit your URL like this:
+
+* `https://my.estore.com/bitcoinPay/bitcoinPay.php`
+
+or you can check my test site here:
+
+* [mainnet](http://raspibolt.epizy.com/bitcoinPay/bitcoinPay.php?wallet=wallet_mainnet) CAREFUL: Don't send me real BTC.
+* [testnet](http://raspibolt.epizy.com/bitcoinPay/bitcoinPay.php?wallet=wallet_testnet)
 
 ## LIVE USAGE ##
 
-### 1. Create a page on your eStore with a form something like this: ###
+### 1a. Checkout Mode: Create a page on your eStore with a form something like this: ###
 ```php
 <?php
 $order_id     = CHANGE_ME; //Some unique order identifier  
@@ -242,6 +261,8 @@ $bitcoinPayPHP= CHANGE_ME; //eg 'bitcoinPay/bitcoinPay.php'
  <input type="hidden" name="callback" value="<?php echo $callback_url;?>">
 </form>
 ```
+### 1b. Manual Mode ###
+Just visit your url like: `https://my.estore.com/bitcoinPay/bitcoinPay.php`
 ### 2. Process Payment Notifications ###
 Edit _StoreCallback.php_ and change these two sections as appropriate for your eStore.
 ```php
@@ -274,14 +295,6 @@ $ cd <bitcoinPay folder>
 $ chmod 0444 *
 $ cd ..
 $ chmod 0555 <bitcoinPay folder>
-```
-### 2. Remove or hide testnet wallet ###
-You don't want someone tricking your system into using your testnet wallet.
-
-Example using the shell command line:
-```
-$ cd <bitcoinPay folder>
-$ rm wallet_testnet.php
 ```
 
 ---
