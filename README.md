@@ -47,7 +47,7 @@ The basic flow is as follows:
 
 1. Checkout Mode:
    1. eStore displays a shopping cart page with a total payable (Fiat currency)
-   1. User clicks _Pay Button_  => Redirected to PHP file which converts fiat value to BTC, and returns a confirmation page
+   1. User clicks _Pay_ button  => Redirected to PHP file which converts fiat value to BTC, and returns a confirmation page
 1. Manual Mode
    1. User enters Memo and fiat value. PHP/Javascript calculates BTC value.
 1. User clicks _Get Payment Request_ => Javascript passes values to PHP file which responds with a Payment Request
@@ -79,7 +79,7 @@ The important things to note are:
   * NONE of the private keys in your wallet, so can not be used to spend your bitcoins.
 * Each level of the tree in the above image has a different xpub.
   * The xpub at the master ('m') level can generate addresses for many different coins (Bitcoin, Litecoin,...). We do not want to use the xpub from this level. 
-  * The xpub from the bitcoin (or Bitcoin-Testnet) level is what is needed for this project.
+  * The xpub from the Bitcoin (or Bitcoin-Testnet) level is what is needed for this project.
   
 ### How does bitcoinPay-PHP get the next receiving address from the xpub? ###
 There is an undocumented feature at the [smartbit.com.au API](https://www.smartbit.com.au/api). If you give an xpub to the _address_ API call, it returns the next un-used receiving address.
