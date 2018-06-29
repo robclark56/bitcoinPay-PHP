@@ -148,7 +148,7 @@ function listenInvoiceSettled(address,BTC,memo) {
 	if ( IsSettled == true) {
 	 return;
 	}
-	console.log('listenInvoiceSettled BTC:' + BTC + ' Address:' + address  + 'Memo:' + memo);
+	console.log('listenInvoiceSettled BTC:' + BTC + ' Address:' + address  + ' Memo:' + memo);
 	request.onreadystatechange = function () {
 		if (request.readyState === 4 && request.status === 200) {
 		  console.log("RESPONSE: " + request.responseText);
